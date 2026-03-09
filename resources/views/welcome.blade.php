@@ -4,7 +4,18 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>UNICENTRO Pós-Graduação | Especialize-se</title>
+    <title>Pós-Graduação UNICENTRO | Especialize-se e Alavanque sua Carreira</title>
+    <meta name="description" content="Portal de Pós-Graduação da UNICENTRO. Increva-se agora e garanta sua especialização com metodologias inovadoras e professores renomados no mercado.">
+    
+    <!-- Open Graph / Meta -->
+    <meta property="og:title" content="Pós-Graduação UNICENTRO | Portal de Inscrições">
+    <meta property="og:description" content="Garanta sua especialização na UNICENTRO. Cursos de alto nível com flexibilidade.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:image" content="{{ asset('images/unicentroma-horizontal.png') }}">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ url('/') }}" />
 
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -61,41 +72,43 @@
             class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-900/80 to-gray-900/50 backdrop-blur-[2px] z-0">
         </div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+        <main>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
 
-            <div
-                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium mb-8">
-                <span class="flex h-2 w-2 relative">
-                    <span
-                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
-                Matrículas Abertas 2026
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium mb-8">
+                    <span class="flex h-2 w-2 relative">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    Matrículas Abertas 2026
+                </div>
+
+                <h1 class="text-4xl md:text-6xl font-extrabold text-white tracking-tight mb-6 leading-tight">
+                    Especialize-se com a <br class="hidden md:block" />
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-blue-500">UNICENTRO
+                        Pós-Graduação</span>
+                </h1>
+
+                <p class="mt-6 text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10">
+                    Impulsione sua carreira com cursos de especialização de alto nível, ministrados por mestres e doutores
+                    renomados no mercado. O seu futuro começa hoje.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="{{ route('inscricao.index') }}"
+                        class="w-full sm:w-auto px-8 py-4 text-base font-bold text-white bg-blue-600 rounded-xl hover:bg-blue-500 focus:ring-4 focus:ring-blue-900 transition-all shadow-xl shadow-blue-500/30 flex items-center justify-center gap-2">
+                        Garantir Minha Vaga <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <a href="#cursos"
+                        class="w-full sm:w-auto px-8 py-4 text-base font-bold text-gray-300 bg-gray-800 border border-gray-700 rounded-xl hover:bg-gray-700 hover:text-white transition-all flex items-center justify-center gap-2">
+                        Conhecer os Cursos
+                    </a>
+                </div>
+
             </div>
-
-            <h1 class="text-4xl md:text-6xl font-extrabold text-white tracking-tight mb-6 leading-tight">
-                Especialize-se com a <br class="hidden md:block" />
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-blue-500">UNICENTRO
-                    Pós-Graduação</span>
-            </h1>
-
-            <p class="mt-6 text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10">
-                Impulsione sua carreira com cursos de especialização de alto nível, ministrados por mestres e doutores
-                renomados no mercado. O seu futuro começa hoje.
-            </p>
-
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="{{ route('inscricao.index') }}"
-                    class="w-full sm:w-auto px-8 py-4 text-base font-bold text-white bg-blue-600 rounded-xl hover:bg-blue-500 focus:ring-4 focus:ring-blue-900 transition-all shadow-xl shadow-blue-500/30 flex items-center justify-center gap-2">
-                    Garantir Minha Vaga <i class="fa-solid fa-arrow-right"></i>
-                </a>
-                <a href="#cursos"
-                    class="w-full sm:w-auto px-8 py-4 text-base font-bold text-gray-300 bg-gray-800 border border-gray-700 rounded-xl hover:bg-gray-700 hover:text-white transition-all flex items-center justify-center gap-2">
-                    Conhecer os Cursos
-                </a>
-            </div>
-
-        </div>
+        </main>
     </section>
 
     <!-- Cursos em Destaque Section -->
@@ -150,21 +163,21 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-950 py-12 border-t border-gray-800 mt-auto">
-        <div
-            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-
-            <p class="text-gray-500 text-sm text-center md:text-left">
-                &copy; {{ date('Y') }} UNICENTROMA/FCMA. Todos os direitos reservados.
-            </p>
-
-            <div class="flex items-center gap-4">
-                <a href="#" class="text-gray-500 hover:text-white transition-colors"><i
-                        class="fa-brands fa-instagram text-xl"></i></a>
-                <a href="#" class="text-gray-500 hover:text-white transition-colors"><i
-                        class="fa-brands fa-whatsapp text-xl"></i></a>
+    <footer class="bg-gray-950 border-t border-gray-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-3">
+                    <img src="{{ asset('images/unicentroma-horizontal.png') }}" alt="Logo UNICENTROMA Rodapé"
+                        class="h-8 w-auto brightness-200 grayscale opacity-80">
+                </div>
+                <div class="text-sm text-gray-500 font-medium">
+                    &copy; {{ date('Y') }} UNICENTRO Pós-Graduação. Todos os direitos reservados.
+                </div>
+                <div class="flex gap-4">
+                    <a href="#" class="text-gray-500 hover:text-white transition-colors"><i class="fa-brands fa-instagram text-xl"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-white transition-colors"><i class="fa-brands fa-youtube text-xl"></i></a>
+                </div>
             </div>
-
         </div>
     </footer>
 

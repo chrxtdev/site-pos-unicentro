@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Signin;
+use App\Services\GeradorMatriculaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -46,8 +47,19 @@ class AsaasWebhookController extends Controller
 
             if ($inscricao) {
                 $inscricao->status_pagamento = 'pago';
+                
+                // Gera a matrícula se ainda não tiver
+                if (!$inscricao->matricula) {
+                    $geradorService = app(GeradorMatriculaService::class);
+                    $inscricao->matricula = $geradorService->gerarMatricula($inscricao);
+                }
+
                 $inscricao->save();
-                Log::info('Pagamento confirmado.', ['signin_id' => $inscricao->id, 'payment_id' => $paymentId]);
+                Log::info('Pagamento confirmado e matrícula gerada.', [
+                    'signin_id' => $inscricao->id, 
+                    'payment_id' => $paymentId,
+                    'matricula' => $inscricao->matricula
+                ]);
             } else {
                 Log::warning('Nenhuma inscrição encontrada para este payment_id.', ['payment_id' => $paymentId]);
             }

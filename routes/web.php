@@ -12,6 +12,7 @@ use App\Http\Controllers\ProcessoSeletivoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Professor\NotaController;
 use App\Http\Controllers\Professor\AtividadeController;
+use App\Http\Controllers\FinanceiroController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -39,6 +40,10 @@ Route::middleware('auth')->group(function () {
 
         // Portal do Aluno
         Route::get('/portal', [AdminController::class , 'portal'])->name('aluno.portal');
+        Route::get('/portal/financeiro', [AdminController::class , 'portalFinanceiro'])->name('aluno.financeiro');
+        Route::get('/portal/notas', [AdminController::class , 'portalNotas'])->name('aluno.notas');
+        Route::get('/portal/documentos', [AdminController::class , 'portalDocumentos'])->name('aluno.documentos');
+        Route::get('/portal/documentos/matricula', [AdminController::class , 'downloadMatricula'])->name('aluno.documentos.matricula');
 
         // Rota de retorno do Impersonate (fora do grupo admin para o aluno impersonado conseguir acessar)
         Route::get('/impersonate-leave', [AdminController::class , 'leaveImpersonate'])->name('admin.impersonate.leave');
@@ -69,6 +74,12 @@ Route::middleware('auth')->group(function () {
             Route::post('/configuracoes/admin', [ConfiguracaoController::class , 'storeAdmin'])->name('configuracoes.storeAdmin');
             Route::put('/configuracoes/admin/{admin}', [ConfiguracaoController::class , 'updateAdmin'])->name('configuracoes.updateAdmin');
             Route::delete('/configuracoes/admin/{admin}', [ConfiguracaoController::class , 'destroyAdmin'])->name('configuracoes.destroyAdmin');
+
+            // Setor Financeiro (Apenas administradores com cargo Master ou Financeiro)
+            Route::group(['middleware' => ['role:admin_master|financeiro']], function () {
+                Route::get('/financeiro', [FinanceiroController::class, 'index'])->name('financeiro.index');
+                Route::get('/financeiro/{id}', [FinanceiroController::class, 'show'])->name('financeiro.show');
+            });
         }
         );
 

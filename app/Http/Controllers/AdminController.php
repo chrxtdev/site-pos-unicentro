@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Signin;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -69,6 +71,65 @@ class AdminController extends Controller
         return view('portal.dashboard', compact('inscricao', 'matriculas', 'atividades'));
     }
 
+    public function portalFinanceiro()
+    {
+        $user = auth()->user();
+        $inscricao = \App\Models\Signin::where('email', $user->email)->first();
+
+        // O redirecionamento e lógica de segurança são idênticos ao principal
+        if (!$inscricao && $user->is_admin) {
+            $inscricao = new \App\Models\Signin([
+                'id' => 0,
+                'nome' => $user->name,
+                'pos_graduacao' => 'Visualização de Admin',
+                'status_pagamento' => 'pago',
+                'valor_mensalidade' => 0.00,
+                'forma_pagamento' => 'boleto',
+            ]);
+            $inscricao->created_at = now();
+        } elseif (!$inscricao) {
+            auth()->logout();
+            return redirect()->route('inscricao.index')->withErrors(['login' => 'Nenhuma inscrição ativa encontrada para este e-mail. Por favor, inscreva-se primeiro.']);
+        }
+
+        // TODO: Futuramente injetar o Array/Collection de Faturas Asaas aqui (Asaas API)
+        $faturas = collect([]); 
+        
+        return view('portal.financeiro', compact('inscricao', 'faturas'));
+    }
+
+    public function portalNotas()
+    {
+        $user = auth()->user();
+        $inscricao = \App\Models\Signin::where('email', $user->email)->first();
+
+        if (!$inscricao && $user->is_admin) {
+            $inscricao = new \App\Models\Signin([
+                'id' => 0,
+                'nome' => $user->name,
+                'pos_graduacao' => 'Visualização de Admin',
+                'status_pagamento' => 'pago',
+                'valor_mensalidade' => 0.00,
+                'forma_pagamento' => 'boleto',
+            ]);
+            $inscricao->created_at = now();
+        } elseif (!$inscricao) {
+            auth()->logout();
+            return redirect()->route('inscricao.index')->withErrors(['login' => 'Nenhuma inscrição ativa encontrada para este e-mail. Por favor, inscreva-se primeiro.']);
+        }
+
+        $matriculas = collect();
+
+        if ($inscricao && $inscricao->id > 0) {
+            $matriculas = \App\Models\MatriculaDisciplina::where('signin_id', $inscricao->id)
+                ->with(['disciplina.professor', 'notas'])
+                ->orderBy('id', 'asc') // Opcional, mantem a ordem matriculada
+                ->get();
+        }
+
+        return view('portal.notas', compact('inscricao', 'matriculas'));
+    }
+
     public function impersonate($id)
     {
         $aluno = Signin::findOrFail($id);
@@ -103,5 +164,27 @@ class AdminController extends Controller
         }
 
         return redirect()->route('dashboard');
+    }
+
+    public function portalDocumentos()
+    {
+        $user = auth()->user();
+        $inscricao = Signin::where('email', $user->email)->first();
+        return view('portal.documentos', compact('inscricao'));
+    }
+
+    public function downloadMatricula()
+    {
+        $user = auth()->user();
+        $inscricao = Signin::where('email', $user->email)->first();
+
+        if (!$inscricao || !$inscricao->matricula) {
+            return back()->withErrors(['erro' => 'Você ainda não possui um número de matrícula gerado.']);
+        }
+
+        $pdf = Pdf::loadView('portal.matricula-pdf', compact('inscricao'))
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->stream('declaracao-matricula-' . $inscricao->matricula . '.pdf');
     }
 }

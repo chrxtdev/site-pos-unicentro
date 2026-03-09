@@ -4,7 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro na Plataforma</title>
+    <title>Inscrição Pós-Graduação | UNICENTRO MA</title>
+    <meta name="description" content="Faça agora sua inscrição na Pós-Graduação da UNICENTRO. Escolha seu curso, a forma de pagamento e dê o próximo passo na sua carreira profissional.">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Inscrição Pós-Graduação UNICENTRO">
+    <meta property="og:description" content="Acesse o portal e realize sua matrícula de forma rápida 100% online.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ route('inscricao.index') }}">
+    <meta property="og:image" content="{{ asset('images/unicentroma.png') }}">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ route('inscricao.index') }}" />
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -18,7 +30,8 @@
         <div class="flex items-center gap-4">
             <img src="{{ asset('images/unicentroma.png') }}" alt="Unicentro MA" class="h-12 drop-shadow-md">
         </div>
-        <h1 class="text-center text-xl md:text-2xl flex-grow font-semibold tracking-tight">Inscrição na Pós-Graduação
+        <h1 class="text-center text-xl md:text-2xl flex-grow font-semibold tracking-tight">
+            Inscrição na Pós-Graduação
         </h1>
         <a href="{{ route('login') }}"
             class="text-sm font-medium text-indigo-200 hover:text-white hover:underline transition hidden md:block">Portal

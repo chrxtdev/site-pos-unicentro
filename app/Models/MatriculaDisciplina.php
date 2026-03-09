@@ -9,7 +9,7 @@ class MatriculaDisciplina extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['signin_id', 'disciplina_id', 'status'];
+    protected $fillable = ['signin_id', 'disciplina_id', 'status', 'total_aulas', 'presencas', 'faltas'];
 
     public function aluno()
     {

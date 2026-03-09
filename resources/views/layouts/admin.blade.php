@@ -95,10 +95,16 @@
                 </a>
                 @endcan
                 @hasanyrole('admin_master|financeiro')
+                <a class="flex items-center gap-4 px-4 py-3 rounded-xl {{ request()->routeIs('financeiro.*') ? 'bg-primary/10 text-primary' : 'text-slate-400 hover:text-white hover:bg-slate-800' }} transition-all duration-200 group"
+                    href="{{ route('financeiro.index') }}">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">account_balance</span>
+                    <span class="text-sm font-medium">Gestão Financeira</span>
+                </a>
+
                 <a class="flex items-center gap-4 px-4 py-3 rounded-xl {{ request()->routeIs('ofertas.*') ? 'bg-primary/10 text-primary' : 'text-slate-400 hover:text-white hover:bg-slate-800' }} transition-all duration-200 group"
                     href="{{ route('ofertas.index') }}">
                     <span class="material-symbols-outlined group-hover:text-primary transition-colors">payments</span>
-                    <span class="text-sm font-medium">Ofertas</span>
+                    <span class="text-sm font-medium">Ofertas / Valores</span>
                 </a>
                 @endhasanyrole
 

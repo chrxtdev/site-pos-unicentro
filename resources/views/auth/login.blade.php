@@ -10,14 +10,14 @@
     <form method="POST" action="{{ route('login') }}" class="space-y-5">
         @csrf
 
-        <!-- Email Address -->
+        <!-- Login (Email, CPF ou RA) -->
         <div>
-            <label for="email" class="block text-sm font-medium text-slate-700 dark:text-slate-300">E-mail</label>
-            <input id="email"
+            <label for="login" class="block text-sm font-medium text-slate-700 dark:text-slate-300">E-mail, CPF ou Matrícula</label>
+            <input id="login"
                 class="block mt-1 w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors"
-                type="email" name="email" :value="old('email')" required autofocus autocomplete="username"
-                placeholder="seu@email.com" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2 text-red-500" />
+                type="text" name="login" :value="old('login')" required autofocus autocomplete="username"
+                placeholder="Insira sua identificação..." />
+            <x-input-error :messages="$errors->get('login')" class="mt-2 text-red-500" />
         </div>
 
         <!-- Password -->

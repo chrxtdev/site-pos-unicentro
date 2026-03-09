@@ -58,10 +58,33 @@
             </a>
 
             <nav class="flex-1 flex flex-col gap-2 px-4 py-4 overflow-y-auto">
-                <a class="flex items-center gap-4 px-4 py-3 rounded-xl {{ request()->routeIs('aluno.portal') ? 'bg-emerald-500/10 text-emerald-400' : 'text-slate-400 hover:text-white hover:bg-slate-800' }} group transition-all duration-200"
-                    href="{{ route('aluno.portal') }}">
-                    <i class="fa-solid fa-shapes text-lg"></i>
-                    <span class="text-sm font-semibold">Meu Painel</span>
+                <a href="{{ route('aluno.portal') }}"
+                    class="flex items-center gap-3 w-full px-4 py-3 rounded-xl {{ request()->routeIs('aluno.portal') ? 'bg-primary/10 text-primary font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800' }} transition-colors">
+                    <span class="material-symbols-outlined text-xl">school</span>
+                    Meu Curso
+                </a>
+                
+                <a href="{{ route('aluno.notas') }}"
+                    class="flex items-center gap-3 w-full px-4 py-3 rounded-xl {{ request()->routeIs('aluno.notas') ? 'bg-primary/10 text-primary font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800' }} transition-colors">
+                    <span class="material-symbols-outlined text-xl">workspace_premium</span>
+                    Desempenho Acadêmico
+                </a>
+                
+                <a href="{{ route('aluno.financeiro') }}"
+                    class="flex items-center gap-3 w-full px-4 py-3 rounded-xl {{ request()->routeIs('aluno.financeiro') ? 'bg-primary/10 text-primary font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800' }} transition-colors">
+                    <span class="material-symbols-outlined text-xl">payments</span>
+                    Financeiro
+                </a>
+
+                <a href="{{ route('aluno.documentos') }}"
+                    class="flex items-center gap-3 w-full px-4 py-3 rounded-xl {{ request()->routeIs('aluno.documentos') ? 'bg-primary/10 text-primary font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800' }} transition-colors">
+                    <span class="material-symbols-outlined text-xl">description</span>
+                    Documentos
+                </a>
+
+                <a href="#"
+                    class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+                    <span class="material-symbols-outlined text-xl"></span>
                 </a>
             </nav>
 
