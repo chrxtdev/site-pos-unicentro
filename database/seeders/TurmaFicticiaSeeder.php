@@ -27,7 +27,7 @@ class TurmaFicticiaSeeder extends Seeder
             ['nome' => 'MBA em Engenharia de Software de Alta Performance'],
             [
                 'sigla' => 'ESP',
-                'tipo' => 'Pós-Graduação Latu Sensu',
+                'tipo' => 'Pós-Graduação',
             ]
         );
 

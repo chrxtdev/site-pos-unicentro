@@ -129,7 +129,7 @@
                         <div class="p-8 flex-grow">
                             <div
                                 class="w-14 h-14 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-500 mb-6 group-hover:scale-110 group-hover:bg-emerald-500/20 transition-all">
-                                <i class="fa-solid fa-graduation-cap text-2xl"></i>
+                                <span class="px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-500 text-[10px] font-bold uppercase tracking-widest border border-emerald-500/20">Pós-Graduação</span>
                             </div>
                             <h3 class="text-xl font-bold text-white mb-3 leading-snug">{{ $curso->nome }}</h3>
                             <p class="text-gray-300 text-sm mb-6">Pós-Graduação Latu Sensu. Matriz curricular atualizada

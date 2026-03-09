@@ -56,7 +56,7 @@
                             <span class="inline-flex items-center bg-slate-700/50 border border-slate-600 px-2 py-0.5 rounded text-xs font-mono text-slate-300">
                                 <i class="fa-solid fa-hashtag text-[9px] mr-1 text-slate-500"></i> RA: {{ $inscricao->matricula ?? 'Aguardando Liberação' }}
                             </span>
-                            <span class="text-xs text-gray-500"><i class="fa-solid fa-circle-info mr-1"></i> Pós-Graduação Latu Sensu</span>
+                            <p class="text-xs text-slate-500 font-bold uppercase tracking-widest opacity-60">Pós-Graduação</p>
                         </div>
                     </div>
                 </div>

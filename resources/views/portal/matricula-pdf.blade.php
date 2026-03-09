@@ -19,7 +19,7 @@
 <body>
     <div class="header">
         <div class="title">Declaração de Matrícula</div>
-        <div style="font-size: 12px; color: #666;">Unicentro - Pós-Graduação Latu Sensu</div>
+        <div style="font-size: 12px; color: #666;">Unicentro - Pós-Graduação</div>
     </div>
 
     <div class="content">
