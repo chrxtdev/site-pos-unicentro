@@ -12,10 +12,10 @@ class DashboardController extends Controller
         /** @var \App\Models\User $user */
         $user = auth()->user();
 
-        if (!$user->is_admin) {
-            return redirect()->route('aluno.portal');
+        if ($user->hasRole(['admin_master', 'financeiro', 'admin_comum', 'professor']) || $user->is_admin) {
+            return redirect()->route('admin.dashboard');
         }
 
-        return redirect()->route('admin.dashboard');
+        return redirect()->route('aluno.portal');
     }
 }

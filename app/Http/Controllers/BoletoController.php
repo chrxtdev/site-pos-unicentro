@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class BoletoController extends Controller
 {
-    public function gerar($id)
+    public function gerar($id, \App\Services\AsaasService $asaasService)
     {
         $inscricao = Signin::findOrFail($id);
         $this->autorizarAcesso($inscricao);
@@ -18,24 +18,23 @@ class BoletoController extends Controller
             return $this->recuperarBoletoExistente($inscricao, $id);
         }
 
-        $telefone = $this->formatarTelefone($inscricao->telefone_celular);
-        if (!$telefone) {
-            return redirect()->back()->with('error', 'Número de telefone inválido.');
-        }
-
         try {
-            $clienteId = $this->criarClienteAsaas($inscricao, $telefone);
-            $boleto = $this->criarBoletoAsaas($clienteId, $inscricao);
+            $boleto = $asaasService->gerarBoletoParaInscricao($inscricao);
 
-            $inscricao->asaas_payment_id = $boleto['id'];
-            $inscricao->save();
+            if (!$boleto) {
+                return redirect()->back()->with('error', 'Erro ao gerar o boleto.');
+            }
 
-            $this->enviarWhatsApp($telefone, $boleto['bankSlipUrl'], $inscricao->nome);
+            $telefone = preg_replace('/[^0-9]/', '', $inscricao->telefone_celular);
+            if (strlen($telefone) === 11) {
+                $telefone = '+55' . $telefone;
+                $this->enviarWhatsApp($telefone, $boleto['bankSlipUrl'], $inscricao->nome);
+            }
 
             return redirect()->route('boleto.mostrar', ['id' => $id, 'url' => $boleto['bankSlipUrl']])
-                ->with('success', 'Boleto gerado com sucesso e enviado por WhatsApp.');
+                ->with('success', 'Boleto gerado com sucesso.');
         } catch (\Exception $e) {
-            Log::error('Erro ao gerar boleto:', ['exception' => $e->getMessage()]);
+            Log::error('Erro ao gerar boleto (Controller):', ['exception' => $e->getMessage()]);
             return redirect()->back()->with('error', 'Erro ao gerar o boleto. Por favor, tente novamente ou entre em contato com a secretaria.');
         }
     }
@@ -74,75 +73,8 @@ class BoletoController extends Controller
         return redirect()->back()->with('error', 'Não foi possível recuperar o boleto existente.');
     }
 
-    private function formatarTelefone(string $telefone): ?string
-    {
-        $telefone = preg_replace('/[^0-9]/', '', $telefone);
+    // Funções de formato interno e api removidas (migradas para o AsaasService)
 
-        if (strlen($telefone) !== 11) {
-            return null;
-        }
-
-        return '+55' . $telefone;
-    }
-
-    private function criarClienteAsaas(Signin $inscricao, string $telefone): string
-    {
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-            'access_token' => config('services.asaas.key'),
-        ])->post(config('services.asaas.url') . '/customers', [
-            'name' => $inscricao->nome,
-            'cpfCnpj' => $inscricao->cpf,
-            'email' => $inscricao->email,
-            'phone' => $telefone,
-        ]);
-
-        $cliente = $response->json();
-
-        if (!isset($cliente['id'])) {
-            $erro = $cliente['errors'][0]['description'] ?? 'Erro desconhecido ao criar cliente.';
-            Log::error('Erro ao criar cliente no ASAAS:', ['response' => $response->body()]);
-            throw new \Exception($erro);
-        }
-
-        return $cliente['id'];
-    }
-
-    private function criarBoletoAsaas(string $clienteId, Signin $inscricao): array
-    {
-        $billingType = match ($inscricao->forma_pagamento) {
-            'pix' => 'PIX',
-            'cartao' => 'CREDIT_CARD',
-            default => 'BOLETO',
-        };
-
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-            'access_token' => config('services.asaas.key'),
-        ])->post(config('services.asaas.url') . '/payments', [
-            'customer' => $clienteId,
-            'billingType' => $billingType,
-            'dueDate' => now()->addDays(7)->toDateString(),
-            'value' => (float) $inscricao->valor_mensalidade,
-            'description' => 'Mensalidade do curso ' . $inscricao->pos_graduacao,
-        ]);
-
-        $boleto = $response->json();
-        Log::info('Cobrança criada.', ['payment_id' => $boleto['id'] ?? 'N/A', 'billing_type' => $billingType]);
-
-        $urlPagamento = $boleto['bankSlipUrl'] ?? $boleto['invoiceUrl'] ?? null;
-
-        if (!isset($boleto['id']) || !$urlPagamento) {
-            $erro = $boleto['errors'][0]['description'] ?? 'Erro desconhecido ao gerar cobrança.';
-            Log::error('Erro ao gerar cobrança no ASAAS (Controller):', ['response' => $response->body()]);
-            throw new \Exception($erro);
-        }
-        
-        // Padroniza 
-        $boleto['bankSlipUrl'] = $urlPagamento;
-
-        return $boleto;
-    }
 
     private function enviarWhatsApp(string $telefone, string $linkBoleto, string $nome): bool
     {

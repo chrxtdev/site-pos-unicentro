@@ -10,7 +10,7 @@ class ProcessoSeletivoController extends Controller
     // Lista os processos seletivos com paginação
     public function index()
     {
-        $processos = ProcessoSeletivo::paginate(10); // Paginação de 10 itens por página
+        $processos = ProcessoSeletivo::latest('id')->paginate(10); 
         return view('processos.index', compact('processos'));
     }
 
@@ -27,9 +27,10 @@ class ProcessoSeletivoController extends Controller
             'nome' => 'required|string|max:255',
             'numero_etapas' => 'required|integer|min:1',
             'numero_ofertas' => 'required|integer|min:1',
+            'situacao' => 'required|in:ATIVO,INATIVO',
         ]);
 
-        ProcessoSeletivo::create($request->only('nome', 'numero_etapas', 'numero_ofertas'));
+        ProcessoSeletivo::create($request->only('nome', 'numero_etapas', 'numero_ofertas', 'situacao'));
 
         return redirect()->route('processos.index')->with('success', 'Processo Seletivo criado com sucesso!');
     }
@@ -47,9 +48,10 @@ class ProcessoSeletivoController extends Controller
             'nome' => 'required|string|max:255',
             'numero_etapas' => 'required|integer|min:1',
             'numero_ofertas' => 'required|integer|min:1',
+            'situacao' => 'required|in:ATIVO,INATIVO',
         ]);
 
-        $processo->update($request->only('nome', 'numero_etapas', 'numero_ofertas'));
+        $processo->update($request->only('nome', 'numero_etapas', 'numero_ofertas', 'situacao'));
 
         return redirect()->route('processos.index')->with('success', 'Processo Seletivo atualizado com sucesso!');
     }

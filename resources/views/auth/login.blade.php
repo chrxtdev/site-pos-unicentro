@@ -12,7 +12,8 @@
 
         <!-- Login (Email, CPF ou RA) -->
         <div>
-            <label for="login" class="block text-sm font-medium text-slate-700 dark:text-slate-300">E-mail, CPF ou Matrícula</label>
+            <label for="login" class="block text-sm font-medium text-slate-700 dark:text-slate-300">E-mail, CPF ou
+                Matrícula</label>
             <input id="login"
                 class="block mt-1 w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors"
                 type="text" name="login" :value="old('login')" required autofocus autocomplete="username"
@@ -31,9 +32,16 @@
                     </a>
                 @endif
             </div>
-            <input id="password"
-                class="block mt-1 w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors"
-                type="password" name="password" required autocomplete="current-password" placeholder="••••••••" />
+            <div class="relative">
+                <input id="password"
+                    class="block mt-1 w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors pr-10"
+                    type="password" name="password" required autocomplete="current-password" placeholder="••••••••" />
+                <button type="button" tabindex="-1"
+                    onclick="const p=document.getElementById('password'); const i=this.querySelector('i'); if(p.type==='password'){p.type='text'; i.classList.remove('fa-eye'); i.classList.add('fa-eye-slash');}else{p.type='password'; i.classList.remove('fa-eye-slash'); i.classList.add('fa-eye');}"
+                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-indigo-600 focus:outline-none">
+                    <i class="fa-regular fa-eye"></i>
+                </button>
+            </div>
             <x-input-error :messages="$errors->get('password')" class="mt-2 text-red-500" />
         </div>
 

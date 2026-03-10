@@ -31,9 +31,16 @@
         <!-- Password -->
         <div>
             <label for="password" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Senha</label>
-            <input id="password"
-                class="block mt-1 w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors"
-                type="password" name="password" required autocomplete="new-password" placeholder="••••••••" />
+            <div class="relative">
+                <input id="password"
+                    class="block mt-1 w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors pr-10"
+                    type="password" name="password" required autocomplete="new-password" placeholder="••••••••" />
+                <button type="button" tabindex="-1"
+                    onclick="const p=document.getElementById('password'); const i=this.querySelector('i'); if(p.type==='password'){p.type='text'; i.classList.remove('fa-eye'); i.classList.add('fa-eye-slash');}else{p.type='password'; i.classList.remove('fa-eye-slash'); i.classList.add('fa-eye');}"
+                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-indigo-600 focus:outline-none">
+                    <i class="fa-regular fa-eye"></i>
+                </button>
+            </div>
             <x-input-error :messages="$errors->get('password')" class="mt-2 text-red-500" />
         </div>
 
@@ -41,10 +48,17 @@
         <div>
             <label for="password_confirmation"
                 class="block text-sm font-medium text-slate-700 dark:text-slate-300">Confirmar Senha</label>
-            <input id="password_confirmation"
-                class="block mt-1 w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors"
-                type="password" name="password_confirmation" required autocomplete="new-password"
-                placeholder="••••••••" />
+            <div class="relative">
+                <input id="password_confirmation"
+                    class="block mt-1 w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors pr-10"
+                    type="password" name="password_confirmation" required autocomplete="new-password"
+                    placeholder="••••••••" />
+                <button type="button" tabindex="-1"
+                    onclick="const p=document.getElementById('password_confirmation'); const i=this.querySelector('i'); if(p.type==='password'){p.type='text'; i.classList.remove('fa-eye'); i.classList.add('fa-eye-slash');}else{p.type='password'; i.classList.remove('fa-eye-slash'); i.classList.add('fa-eye');}"
+                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-indigo-600 focus:outline-none">
+                    <i class="fa-regular fa-eye"></i>
+                </button>
+            </div>
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2 text-red-500" />
         </div>
 

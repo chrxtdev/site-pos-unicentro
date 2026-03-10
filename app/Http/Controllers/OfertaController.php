@@ -9,11 +9,19 @@ use Illuminate\Http\Request;
 
 class OfertaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $ofertas = Oferta::with('curso')->paginate(5); // Carregar o relacionamento com curso
+        $processoId = $request->input('processo_seletivo_id') ?? $request->input('processo');
+
+        $ofertas = Oferta::with('curso')
+            ->when($processoId, function ($query) use ($processoId) {
+                $query->where('processo_seletivo_id', $processoId);
+            })
+            ->paginate(15) // Aumentando um pouco o padrão
+            ->withQueryString();
+            
         $processosSeletivos = ProcessoSeletivo::select('id', 'nome')->get();
-        $cursos = Curso::select('id', 'nome')->get();
+        $cursos = \App\Models\Curso::select('id', 'nome')->get();
 
         return view('ofertas.index', compact('ofertas', 'processosSeletivos', 'cursos'));
     }

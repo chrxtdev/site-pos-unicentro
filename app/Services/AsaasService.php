@@ -20,9 +20,28 @@ class AsaasService
         if (!$boleto) return null;
 
         $inscricao->asaas_payment_id = $boleto['id'];
+        $inscricao->asaas_customer_id = $clienteId;
+        $inscricao->asaas_installment_id = $boleto['installment'] ?? null;
         $inscricao->save();
 
         return $boleto;
+    }
+
+    public function buscarFaturasParcelamento(string $installmentId)
+    {
+        $response = Http::withHeaders([
+            'access_token' => config('services.asaas.key'),
+        ])->get(config('services.asaas.url') . '/payments', [
+            'installment' => $installmentId,
+            'limit' => 100, // Garante que pega todas as 12
+        ]);
+
+        if ($response->failed()) {
+            Log::error('Erro ao buscar faturas no Asaas:', ['response' => $response->body()]);
+            return collect();
+        }
+
+        return collect($response->json('data'))->sortBy('dueDate');
     }
 
     private function formatarTelefone(string $telefone): ?string
@@ -57,8 +76,7 @@ class AsaasService
     {
         $billingType = match ($inscricao->forma_pagamento) {
             'pix' => 'PIX',
-            'cartao' => 'CREDIT_CARD',
-            default => 'BOLETO',
+            default => 'BOLETO', // Removemos cartão, aceitando BOLETO como padrão
         };
 
         $response = Http::withHeaders([
@@ -67,9 +85,10 @@ class AsaasService
         ])->post(config('services.asaas.url') . '/payments', [
             'customer' => $clienteId,
             'billingType' => $billingType,
-            'dueDate' => now()->addDays(7)->toDateString(),
-            'value' => (float) $inscricao->valor_mensalidade,
-            'description' => 'Mensalidade do curso ' . $inscricao->pos_graduacao,
+            'dueDate' => now()->addDays(5)->toDateString(), // 1º Vencimento 5 dias após inscrição
+            'installmentCount' => 12, // Carnê com 12 parcelas
+            'installmentValue' => (float) $inscricao->valor_mensalidade, // Valor fixo da parcela (Ex: 1000)
+            'description' => 'Carnê de Mensalidades (12x) - ' . $inscricao->pos_graduacao,
         ]);
 
         $boleto = $response->json();

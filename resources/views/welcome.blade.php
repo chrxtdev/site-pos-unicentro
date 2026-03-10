@@ -5,15 +5,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pós-Graduação UNICENTRO | Especialize-se e Alavanque sua Carreira</title>
-    <meta name="description" content="Portal de Pós-Graduação da UNICENTRO. Increva-se agora e garanta sua especialização com metodologias inovadoras e professores renomados no mercado.">
-    
+    <meta name="description"
+        content="Portal de Pós-Graduação da UNICENTRO. Increva-se agora e garanta sua especialização com metodologias inovadoras e professores renomados no mercado.">
+
     <!-- Open Graph / Meta -->
     <meta property="og:title" content="Pós-Graduação UNICENTRO | Portal de Inscrições">
-    <meta property="og:description" content="Garanta sua especialização na UNICENTRO. Cursos de alto nível com flexibilidade.">
+    <meta property="og:description"
+        content="Garanta sua especialização na UNICENTRO. Cursos de alto nível com flexibilidade.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url('/') }}">
     <meta property="og:image" content="{{ asset('images/unicentroma-horizontal.png') }}">
-    
+
     <!-- Canonical URL -->
     <link rel="canonical" href="{{ url('/') }}" />
 
@@ -92,7 +94,8 @@
                 </h1>
 
                 <p class="mt-6 text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10">
-                    Impulsione sua carreira com cursos de especialização de alto nível, ministrados por mestres e doutores
+                    Impulsione sua carreira com cursos de especialização de alto nível, ministrados por mestres e
+                    doutores
                     renomados no mercado. O seu futuro começa hoje.
                 </p>
 
@@ -129,7 +132,8 @@
                         <div class="p-8 flex-grow">
                             <div
                                 class="w-14 h-14 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-500 mb-6 group-hover:scale-110 group-hover:bg-emerald-500/20 transition-all">
-                                <span class="px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-500 text-[10px] font-bold uppercase tracking-widest border border-emerald-500/20">Pós-Graduação</span>
+                                <span
+                                    class="px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-500 text-[10px] font-bold uppercase tracking-widest border border-emerald-500/20">Pós-Graduação</span>
                             </div>
                             <h3 class="text-xl font-bold text-white mb-3 leading-snug">{{ $curso->nome }}</h3>
                             <p class="text-gray-300 text-sm mb-6">Pós-Graduação Latu Sensu. Matriz curricular atualizada
@@ -174,8 +178,10 @@
                     &copy; {{ date('Y') }} UNICENTRO Pós-Graduação. Todos os direitos reservados.
                 </div>
                 <div class="flex gap-4">
-                    <a href="#" class="text-gray-500 hover:text-white transition-colors"><i class="fa-brands fa-instagram text-xl"></i></a>
-                    <a href="#" class="text-gray-500 hover:text-white transition-colors"><i class="fa-brands fa-youtube text-xl"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-white transition-colors"><i
+                            class="fa-brands fa-instagram text-xl"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-white transition-colors"><i
+                            class="fa-brands fa-youtube text-xl"></i></a>
                 </div>
             </div>
         </div>

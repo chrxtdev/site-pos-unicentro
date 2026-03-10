@@ -7,7 +7,8 @@
     <title>UNICENTROMA - Admin Dashboard</title>
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
@@ -25,19 +26,75 @@
                         "sidebar-dark": "#020617", // slate-950
                     },
                     fontFamily: {
-                        "display": ["Lexend", "sans-serif"]
+                        "display": ["Plus Jakarta Sans", "sans-serif"],
+                        "sans": ["Plus Jakarta Sans", "sans-serif"]
                     },
                     borderRadius: {
-                        "DEFAULT": "0.5rem",
-                        "lg": "0.75rem",
-                        "xl": "1rem",
-                        "2xl": "1.5rem",
+                        "DEFAULT": "0.625rem",
+                        "lg": "0.875rem",
+                        "xl": "1.25rem",
+                        "2xl": "1.75rem",
                         "full": "9999px"
                     },
+                    boxShadow: {
+                        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+                        'glow': '0 0 15px -3px rgba(16, 183, 116, 0.3)',
+                    }
                 },
             },
         }
     </script>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .dark .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
 </head>
 
 <body
@@ -55,71 +112,91 @@
                     <p class="text-slate-400 text-xs font-semibold uppercase tracking-widest">Admin Portal</p>
                 </div>
             </a>
-            <nav class="flex-1 flex flex-col gap-2 px-4 py-4 overflow-y-auto">
-                <a class="flex items-center gap-4 px-4 py-3 rounded-xl {{ request()->routeIs('admin.dashboard') ? 'bg-primary/10 text-primary' : 'text-slate-400 hover:text-white hover:bg-slate-800' }} group transition-all duration-200"
+            <nav class="flex-1 flex flex-col gap-2 px-4 py-6 overflow-y-auto custom-scrollbar">
+                <a class="flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300 group {{ request()->routeIs('admin.dashboard') ? 'bg-primary text-white shadow-glow translate-x-1' : 'text-slate-400 hover:text-white hover:bg-white/5 hover:translate-x-1' }}"
                     href="{{ route('admin.dashboard') }}">
-                    <span class="material-symbols-outlined filled">dashboard</span>
-                    <span class="text-sm font-semibold">Dashboard</span>
+                    <div
+                        class="w-8 h-8 flex items-center justify-center rounded-xl {{ request()->routeIs('admin.dashboard') ? 'bg-white/20' : 'bg-slate-800/50 group-hover:bg-primary/20 transition-colors' }}">
+                        <span class="material-symbols-outlined filled text-sm">dashboard</span>
+                    </div>
+                    <span class="text-sm font-black tracking-tight">Visão Geral</span>
                 </a>
-                
+
                 @can('view_notas')
-                <a class="flex items-center gap-4 px-4 py-3 rounded-xl {{ request()->routeIs('professor.disciplinas.*') || request()->routeIs('professor.notas.*') ? 'bg-primary/10 text-primary' : 'text-slate-400 hover:text-white hover:bg-slate-800' }} transition-all duration-200 group"
-                    href="{{ route('professor.disciplinas.index') }}">
-                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">history_edu</span>
-                    <span class="text-sm font-medium">Diário de Turma</span>
-                </a>
+                    <a class="flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300 group {{ request()->routeIs('professor.disciplinas.*') || request()->routeIs('professor.notas.*') ? 'bg-primary text-white shadow-glow translate-x-1' : 'text-slate-400 hover:text-white hover:bg-white/5 hover:translate-x-1' }}"
+                        href="{{ route('professor.disciplinas.index') }}">
+                        <div
+                            class="w-8 h-8 flex items-center justify-center rounded-xl {{ request()->routeIs('professor.disciplinas.*') || request()->routeIs('professor.notas.*') ? 'bg-white/20' : 'bg-slate-800/50 group-hover:bg-primary/20 transition-colors' }}">
+                            <span class="material-symbols-outlined text-sm">history_edu</span>
+                        </div>
+                        <span class="text-sm font-black tracking-tight">Diário de Turma</span>
+                    </a>
                 @endcan
 
-                
                 @can('view_alunos')
-                <a class="flex items-center gap-4 px-4 py-3 rounded-xl {{ request()->routeIs('alunos.*') ? 'bg-primary/10 text-primary' : 'text-slate-400 hover:text-white hover:bg-slate-800' }} transition-all duration-200 group"
-                    href="{{ route('alunos.index') }}">
-                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">group</span>
-                    <span class="text-sm font-medium">Alunos</span>
-                </a>
+                    <a class="flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300 group {{ request()->routeIs('alunos.*') ? 'bg-primary text-white shadow-glow translate-x-1' : 'text-slate-400 hover:text-white hover:bg-white/5 hover:translate-x-1' }}"
+                        href="{{ route('alunos.index') }}">
+                        <div
+                            class="w-8 h-8 flex items-center justify-center rounded-xl {{ request()->routeIs('alunos.*') ? 'bg-white/20' : 'bg-slate-800/50 group-hover:bg-primary/20 transition-colors' }}">
+                            <span class="material-symbols-outlined text-sm">group</span>
+                        </div>
+                        <span class="text-sm font-black tracking-tight">Alunos</span>
+                    </a>
                 @endcan
+
                 @hasanyrole('admin_master|financeiro|admin_comum')
-                <a class="flex items-center gap-4 px-4 py-3 rounded-xl {{ request()->routeIs('processos.*') ? 'bg-primary/10 text-primary' : 'text-slate-400 hover:text-white hover:bg-slate-800' }} transition-all duration-200 group"
-                    href="{{ route('processos.index') }}">
-                    <i
-                        class="fa-solid fa-list-check text-[20px] group-hover:text-primary transition-colors text-center w-6"></i>
-                    <span class="text-sm font-medium">Processos Seletivos</span>
-                </a>
+                    <a class="flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300 group {{ request()->routeIs('processos.*') ? 'bg-primary text-white shadow-glow translate-x-1' : 'text-slate-400 hover:text-white hover:bg-white/5 hover:translate-x-1' }}"
+                        href="{{ route('processos.index') }}">
+                        <div
+                            class="w-8 h-8 flex items-center justify-center rounded-xl {{ request()->routeIs('processos.*') ? 'bg-white/20' : 'bg-slate-800/50 group-hover:bg-primary/20 transition-colors' }}">
+                            <i class="fa-solid fa-list-check text-xs"></i>
+                        </div>
+                        <span class="text-sm font-black tracking-tight">Processos Seletivos</span>
+                    </a>
                 @endhasanyrole
 
                 @can('view_cursos')
-                <a class="flex items-center gap-4 px-4 py-3 rounded-xl {{ request()->routeIs('cursos.*') ? 'bg-primary/10 text-primary' : 'text-slate-400 hover:text-white hover:bg-slate-800' }} transition-all duration-200 group"
-                    href="{{ route('cursos.index') }}">
-                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">school</span>
-                    <span class="text-sm font-medium">Cursos</span>
-                </a>
+                    <a class="flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300 group {{ request()->routeIs('cursos.*') ? 'bg-primary text-white shadow-glow translate-x-1' : 'text-slate-400 hover:text-white hover:bg-white/5 hover:translate-x-1' }}"
+                        href="{{ route('cursos.index') }}">
+                        <div
+                            class="w-8 h-8 flex items-center justify-center rounded-xl {{ request()->routeIs('cursos.*') ? 'bg-white/20' : 'bg-slate-800/50 group-hover:bg-primary/20 transition-colors' }}">
+                            <span class="material-symbols-outlined text-sm">school</span>
+                        </div>
+                        <span class="text-sm font-black tracking-tight">Cursos</span>
+                    </a>
                 @endcan
-                @hasanyrole('admin_master|financeiro')
-                <a class="flex items-center gap-4 px-4 py-3 rounded-xl {{ request()->routeIs('financeiro.*') ? 'bg-primary/10 text-primary' : 'text-slate-400 hover:text-white hover:bg-slate-800' }} transition-all duration-200 group"
-                    href="{{ route('financeiro.index') }}">
-                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">account_balance</span>
-                    <span class="text-sm font-medium">Gestão Financeira</span>
-                </a>
 
-                <a class="flex items-center gap-4 px-4 py-3 rounded-xl {{ request()->routeIs('ofertas.*') ? 'bg-primary/10 text-primary' : 'text-slate-400 hover:text-white hover:bg-slate-800' }} transition-all duration-200 group"
-                    href="{{ route('ofertas.index') }}">
-                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">payments</span>
-                    <span class="text-sm font-medium">Ofertas / Valores</span>
-                </a>
+                @hasanyrole('admin_master|financeiro')
+                    <a class="flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300 group {{ request()->routeIs('financeiro.*') ? 'bg-primary text-white shadow-glow translate-x-1' : 'text-slate-400 hover:text-white hover:bg-white/5 hover:translate-x-1' }}"
+                        href="{{ route('financeiro.index') }}">
+                        <div
+                            class="w-8 h-8 flex items-center justify-center rounded-xl {{ request()->routeIs('financeiro.*') ? 'bg-white/20' : 'bg-slate-800/50 group-hover:bg-primary/20 transition-colors' }}">
+                            <span class="material-symbols-outlined text-sm">account_balance</span>
+                        </div>
+                        <span class="text-sm font-black tracking-tight">Gestão Financeira</span>
+                    </a>
                 @endhasanyrole
 
+                <div class="my-4 border-t border-slate-800/50 mx-4"></div>
+
                 @can('manage_configuracoes')
-                <a class="flex items-center gap-4 px-4 py-3 rounded-xl {{ request()->routeIs('configuracoes.*') ? 'bg-primary/10 text-primary' : 'text-slate-400 hover:text-white hover:bg-slate-800' }} transition-all duration-200 group"
-                    href="{{ route('configuracoes.index') }}">
-                    <span class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
-                    <span class="text-sm font-medium">Configurações</span>
-                </a>
+                    <a class="flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300 group {{ request()->routeIs('configuracoes.*') ? 'bg-white/10 text-white translate-x-1' : 'text-slate-500 hover:text-white hover:bg-white/5 hover:translate-x-1' }}"
+                        href="{{ route('configuracoes.index') }}">
+                        <div
+                            class="w-8 h-8 flex items-center justify-center rounded-xl bg-slate-800/50 group-hover:bg-primary/20 transition-colors">
+                            <span class="material-symbols-outlined text-sm">settings</span>
+                        </div>
+                        <span class="text-sm font-black tracking-tight">Configurações</span>
+                    </a>
                 @endcan
-                <a class="flex items-center gap-4 px-4 py-3 rounded-xl mt-4 border border-slate-700 text-amber-400 hover:text-white hover:bg-slate-800 transition-all duration-200 group"
+
+                <a class="flex items-center gap-4 px-4 py-3 rounded-2xl mt-4 border border-amber-500/30 bg-amber-500/5 text-amber-500 hover:bg-amber-500 hover:text-white transition-all duration-300 group"
                     href="{{ route('aluno.portal') }}">
-                    <span
-                        class="material-symbols-outlined group-hover:text-amber-300 transition-colors">laptop_mac</span>
-                    <span class="text-sm font-medium">Ver Portal do Aluno</span>
+                    <div
+                        class="w-8 h-8 flex items-center justify-center rounded-xl bg-amber-500/10 group-hover:bg-white/20 transition-colors">
+                        <span class="material-symbols-outlined text-sm">laptop_mac</span>
+                    </div>
+                    <span class="text-sm font-black tracking-tight">Abrir Portal Aluno</span>
                 </a>
             </nav>
 
@@ -152,7 +229,7 @@
         <div class="flex flex-col flex-1 h-full overflow-hidden bg-background-light dark:bg-background-dark">
             <!-- Header -->
             <header
-                class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark z-10">
+                class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/80 backdrop-blur-xl z-20 sticky top-0 shadow-sm">
                 <div class="flex items-center gap-4">
                     <button
                         class="lg:hidden text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white">
@@ -161,20 +238,66 @@
                     <h2 class="text-xl font-bold text-slate-800 dark:text-white">@yield('title', 'Visão Global')</h2>
                 </div>
                 <div class="flex items-center gap-6">
-                    <div class="hidden md:flex relative group">
+                    <form method="GET" action="{{ route('alunos.index') }}" class="hidden md:flex relative group">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <span class="material-symbols-outlined text-slate-400">search</span>
                         </div>
-                        <input
+                        <input name="search"
                             class="bg-slate-100 dark:bg-slate-800 border-none text-sm rounded-xl block w-64 pl-10 p-2.5 text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-primary focus:bg-white dark:focus:bg-slate-900 transition-all"
-                            placeholder="Buscar alunos, cursos..." type="text">
+                            placeholder="Buscar alunos..." type="text">
+                        <button type="submit" class="hidden"></button>
+                    </form>
+
+                    <div class="relative group">
+                        <button
+                            class="relative p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors cursor-pointer">
+                            <span class="material-symbols-outlined">notifications</span>
+                            <span
+                                class="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white dark:border-background-dark"></span>
+                        </button>
+
+                        <!-- Dropdown panel -->
+                        <div
+                            class="absolute right-0 mt-2 w-80 bg-white dark:bg-surface-dark rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 transform origin-top-right scale-95 group-hover:scale-100">
+                            <div
+                                class="p-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                                <h3 class="text-sm font-bold text-slate-900 dark:text-white">Notificações</h3>
+                                <span
+                                    class="bg-primary/10 text-primary text-[10px] px-2 py-0.5 rounded-full font-bold">Recentes</span>
+                            </div>
+                            <div class="max-h-[300px] overflow-y-auto custom-scrollbar">
+                                @php
+                                    $ultimasMatriculas = \App\Models\Signin::latest()->take(3)->get();
+                                @endphp
+                                @foreach ($ultimasMatriculas as $notif)
+                                    <a href="{{ route('financeiro.show', $notif->id) }}"
+                                        class="flex items-start gap-3 p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 border-b border-slate-50 dark:border-slate-800/50 transition-colors">
+                                        <div
+                                            class="w-8 h-8 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <i class="fa-solid fa-user-plus text-xs"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs font-semibold text-slate-900 dark:text-white mb-0.5">
+                                                Inscrição processada</p>
+                                            <p class="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2">
+                                                <b>{{ $notif->nome }}</b> via {{ ucfirst($notif->forma_pagamento) }}.
+                                            </p>
+                                            <span class="text-[9px] text-slate-400 block mt-1"><i
+                                                    class="fa-regular fa-clock mr-1"></i>{{ $notif->created_at->diffForHumans() }}</span>
+                                        </div>
+                                    </a>
+                                @endforeach
+                            </div>
+                            @hasanyrole('admin_master|financeiro')
+                                <div
+                                    class="p-2 border-t border-slate-100 dark:border-slate-800 text-center bg-slate-50 dark:bg-slate-900/50 rounded-b-2xl">
+                                    <a href="{{ route('financeiro.index') }}"
+                                        class="text-[11px] font-bold text-primary hover:text-primary/80 transition-colors p-2 block w-full">Ver
+                                        Central Financeira</a>
+                                </div>
+                            @endhasanyrole
+                        </div>
                     </div>
-                    <button
-                        class="relative p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
-                        <span class="material-symbols-outlined">notifications</span>
-                        <span
-                            class="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white dark:border-background-dark"></span>
-                    </button>
                 </div>
             </header>
             <!-- Scrollable Content -->

@@ -34,6 +34,12 @@ class ConfiguracaoController extends Controller
             'role.exists'       => 'O nível de acesso selecionado é inválido.',
         ]);
 
+        if (auth()->user()->hasRole('admin_comum')) {
+            if (in_array($request->role, ['admin_master', 'financeiro'])) {
+                abort(403, 'Você não tem permissão para criar administradores com este nível de acesso.');
+            }
+        }
+
         $admin = User::create([
             'name'     => strtoupper($request->name),
             'email'    => $request->email,
@@ -55,6 +61,18 @@ class ConfiguracaoController extends Controller
             'email'    => ['required', 'string', 'email', 'max:255', \Illuminate\Validation\Rule::unique('users')->ignore($admin->id)],
             'password' => ['nullable', 'string', 'min:8', Password::defaults()],
         ]);
+
+        if (auth()->user()->hasRole('admin_comum')) {
+            // Se o usuário alvo for nível superior, o admin comum não pode editá-lo.
+            if ($admin->hasRole('admin_master') || $admin->hasRole('financeiro')) {
+                abort(403, 'Você não tem permissão para editar este administrador.');
+            }
+
+            // O admin comum também não pode elevar o cargo para master ou financeiro
+            if ($request->filled('role') && in_array($request->role, ['admin_master', 'financeiro'])) {
+                abort(403, 'Você não tem permissão para atribuir este nível de acesso.');
+            }
+        }
 
         $admin->name = strtoupper($request->name);
         $admin->email = $request->email;
@@ -86,6 +104,12 @@ class ConfiguracaoController extends Controller
             return redirect()
                 ->route('configuracoes.index')
                 ->with('error', 'Este usuário não é um administrador.');
+        }
+
+        if (auth()->user()->hasRole('admin_comum')) {
+            if ($admin->hasRole('admin_master') || $admin->hasRole('financeiro')) {
+                abort(403, 'Você não tem permissão para remover este administrador.');
+            }
         }
 
         $admin->delete();

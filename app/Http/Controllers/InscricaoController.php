@@ -51,7 +51,7 @@ class InscricaoController extends Controller
             'telefone_celular' => 'required|string|max:15',
             'tipo_aluno' => 'required|string',
             'valor_mensalidade' => 'prohibited',
-            'forma_pagamento' => 'required|string|in:boleto,pix,cartao',
+            'forma_pagamento' => 'required|string|in:boleto,pix',
             'pos_graduacao' => 'required|string',
             'oferta_id' => 'required|exists:ofertas,id',
             'login' => 'required|string|max:255|unique:signins,login',

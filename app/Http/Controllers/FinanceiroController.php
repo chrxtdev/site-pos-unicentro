@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Signin;
 use Illuminate\Http\Request;
+use App\Services\AsaasService;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class FinanceiroController extends Controller
 {
@@ -45,12 +48,49 @@ class FinanceiroController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id, AsaasService $asaasService)
     {
         $aluno = Signin::findOrFail($id);
         
-        // TODO: In the future, fetch dynamic invoices from ASAAS API using $aluno->asaas_payment_id
-        $faturas = collect([]);
+        $faturasRaw = collect([]);
+
+        if ($aluno->asaas_installment_id) {
+            $faturasRaw = $asaasService->buscarFaturasParcelamento($aluno->asaas_installment_id);
+        } elseif ($aluno->asaas_payment_id) {
+            try {
+                $response = Http::withHeaders([
+                    'access_token' => config('services.asaas.key'),
+                ])->get(config('services.asaas.url') . '/payments/' . $aluno->asaas_payment_id);
+                
+                if ($response->successful()) {
+                    $faturasRaw = collect([$response->json()]);
+                }
+            } catch (\Exception $e) {
+                // Silencioso
+            }
+        }
+        
+        // Converter em objetos para que a View possa usar ->status, ->dueDate etc.
+        $faturas = $faturasRaw->map(function ($fatura) {
+            return (object) $fatura;
+        });
+
+        // Auto-Cura (Fallback de Webhook) se verificado no Admin
+        if ($aluno->status_pagamento !== 'pago' && $faturasRaw->count() > 0) {
+            $faturaPaga = $faturasRaw->firstWhere(function ($fatura) {
+                return in_array($fatura['status'], ['RECEIVED', 'CONFIRMED', 'RECEIVED_IN_CASH']);
+            });
+
+            if ($faturaPaga) {
+                $aluno->status_pagamento = 'pago';
+                if (!$aluno->matricula) {
+                    $geradorService = app(\App\Services\GeradorMatriculaService::class);
+                    $aluno->matricula = $geradorService->gerarMatricula($aluno);
+                }
+                $aluno->save();
+                Log::info('Auto-cura Asaas via Visualização Admin: Pagamento detectado como Pago.', ['signin' => $aluno->id]);
+            }
+        }
 
         return view('admin.financeiro.show', compact('aluno', 'faturas'));
     }

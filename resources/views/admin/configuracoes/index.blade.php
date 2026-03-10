@@ -32,14 +32,17 @@
                 class="tab-btn px-6 py-3 font-bold text-sm border-b-2 text-indigo-500 border-indigo-500 whitespace-nowrap transition-colors">
                 <i class="fa-solid fa-user-shield mr-2"></i> Administradores
             </button>
-            <button type="button" onclick="switchTab('inst')" id="btn-inst"
-                class="tab-btn px-6 py-3 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white whitespace-nowrap transition-colors">
-                <i class="fa-solid fa-building mr-2"></i> Instituição
-            </button>
-            <button type="button" onclick="switchTab('integ')" id="btn-integ"
-                class="tab-btn px-6 py-3 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white whitespace-nowrap transition-colors">
-                <i class="fa-solid fa-plug mr-2"></i> Integrações e Webhook
-            </button>
+
+            @hasanyrole('admin_master|financeiro')
+                <button type="button" onclick="switchTab('inst')" id="btn-inst"
+                    class="tab-btn px-6 py-3 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white whitespace-nowrap transition-colors">
+                    <i class="fa-solid fa-building mr-2"></i> Instituição
+                </button>
+                <button type="button" onclick="switchTab('integ')" id="btn-integ"
+                    class="tab-btn px-6 py-3 font-semibold text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white whitespace-nowrap transition-colors">
+                    <i class="fa-solid fa-plug mr-2"></i> Integrações e Webhook
+                </button>
+            @endhasanyrole
         </div>
 
         {{-- ABA 1: Administradores --}}
@@ -83,22 +86,30 @@
                                 placeholder="admin@escola.com.br">
                         </div>
 
-                        <div>
-                            <label for="password"
-                                class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Senha</label>
+                        <div class="relative">
                             <input type="password" name="password" id="password" required autocomplete="new-password"
-                                class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                                class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm pr-10"
                                 placeholder="Mínimo 8 caracteres">
+                            <button type="button" tabindex="-1"
+                                onclick="const p=document.getElementById('password'); const i=this.querySelector('i'); if(p.type==='password'){p.type='text'; i.classList.remove('fa-eye'); i.classList.add('fa-eye-slash');}else{p.type='password'; i.classList.remove('fa-eye-slash'); i.classList.add('fa-eye');}"
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-indigo-600 focus:outline-none">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
                         </div>
 
                         <div>
                             <label for="role"
-                                class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Nível de Acesso</label>
+                                class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Nível de
+                                Acesso</label>
                             <select name="role" id="role" required
                                 class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
                                 <option value="" disabled selected>Selecione um perfil...</option>
-                                @foreach($roles as $role)
-                                    <option value="{{ $role->name }}">{{ strtoupper(str_replace('_', ' ', $role->name)) }}</option>
+                                @foreach ($roles as $role)
+                                    @if (auth()->user()->hasRole('admin_comum') && in_array($role->name, ['admin_master', 'financeiro']))
+                                        @continue
+                                    @endif
+                                    <option value="{{ $role->name }}">{{ strtoupper(str_replace('_', ' ', $role->name)) }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -141,8 +152,9 @@
                                         </p>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <p class="text-xs text-slate-500 dark:text-slate-400">{{ $admin->email }}</p>
-                                            @if($admin->roles->count() > 0)
-                                                <span class="text-[10px] uppercase font-bold text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-100">
+                                            @if ($admin->roles->count() > 0)
+                                                <span
+                                                    class="text-[10px] uppercase font-bold text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-100">
                                                     {{ str_replace('_', ' ', $admin->roles->first()->name) }}
                                                 </span>
                                             @endif
@@ -156,22 +168,36 @@
                                             class="text-xs font-medium bg-indigo-500/10 text-indigo-500 px-3 py-1 rounded-full">Você</span>
                                     @else
                                         @php
-                                            $adminRoleName = $admin->roles->count() > 0 ? $admin->roles->first()->name : '';
+                                            $adminRoleName =
+                                                $admin->roles->count() > 0 ? $admin->roles->first()->name : '';
+                                            $isSuperior = in_array($adminRoleName, ['admin_master', 'financeiro']);
+                                            $canEdit =
+                                                auth()->user()->hasRole('admin_master') ||
+                                                auth()->user()->hasRole('financeiro') ||
+                                                !$isSuperior;
                                         @endphp
-                                        <button type="button"
-                                            onclick="openEditAdminModal({{ $admin->id }}, '{{ addslashes($admin->name) }}', '{{ addslashes($admin->email) }}', '{{ $adminRoleName }}')"
-                                            class="opacity-0 group-hover:opacity-100 text-xs font-medium text-amber-500 hover:text-amber-400 bg-amber-500/10 hover:bg-amber-500/20 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5">
-                                            <i class="fa-solid fa-pen-to-square text-[10px]"></i> Editar
-                                        </button>
-                                        <form method="POST" action="{{ route('configuracoes.destroyAdmin', $admin) }}"
-                                            class="inline" onsubmit="return confirm('Remover {{ $admin->name }}?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"
-                                                class="opacity-0 group-hover:opacity-100 text-xs font-medium text-red-500 hover:text-red-400 bg-red-500/10 hover:bg-red-500/20 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5">
-                                                <i class="fa-solid fa-trash-can text-[10px]"></i> Remover
+
+                                        @if ($canEdit)
+                                            <button type="button"
+                                                onclick="openEditAdminModal({{ $admin->id }}, '{{ addslashes($admin->name) }}', '{{ addslashes($admin->email) }}', '{{ $adminRoleName }}')"
+                                                class="opacity-0 group-hover:opacity-100 text-xs font-medium text-amber-500 hover:text-amber-400 bg-amber-500/10 hover:bg-amber-500/20 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5">
+                                                <i class="fa-solid fa-pen-to-square text-[10px]"></i> Editar
                                             </button>
-                                        </form>
+                                            <form method="POST"
+                                                action="{{ route('configuracoes.destroyAdmin', $admin) }}" class="inline"
+                                                onsubmit="return confirm('Remover {{ $admin->name }}?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    class="opacity-0 group-hover:opacity-100 text-xs font-medium text-red-500 hover:text-red-400 bg-red-500/10 hover:bg-red-500/20 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5">
+                                                    <i class="fa-solid fa-trash-can text-[10px]"></i> Remover
+                                                </button>
+                                            </form>
+                                        @else
+                                            <span
+                                                class="text-xs font-medium bg-slate-500/10 text-slate-500 px-3 py-1 rounded-full"
+                                                title="Sem permissão">Restrito</span>
+                                        @endif
                                     @endif
                                 </div>
                             </div>
@@ -352,22 +378,29 @@
                             class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nova Senha <span
-                                class="text-xs text-slate-400 font-normal">(opcional)</span></label>
-                        <input type="password" name="password" autocomplete="new-password"
-                            class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                    <div class="relative">
+                        <input type="password" name="password" id="edit_admin_password" autocomplete="new-password"
+                            class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm pr-10"
                             placeholder="Deixe branco se não for alterar">
+                        <button type="button" tabindex="-1"
+                            onclick="const p=document.getElementById('edit_admin_password'); const i=this.querySelector('i'); if(p.type==='password'){p.type='text'; i.classList.remove('fa-eye'); i.classList.add('fa-eye-slash');}else{p.type='password'; i.classList.remove('fa-eye-slash'); i.classList.add('fa-eye');}"
+                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-indigo-600 focus:outline-none">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nível de Acesso <span
-                                class="text-xs text-slate-400 font-normal">(opcional)</span></label>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nível de Acesso
+                            <span class="text-xs text-slate-400 font-normal">(opcional)</span></label>
                         <select name="role" id="edit_admin_role"
                             class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
                             <option value="">Manter atual</option>
-                            @foreach($roles as $role)
-                                <option value="{{ $role->name }}">{{ strtoupper(str_replace('_', ' ', $role->name)) }}</option>
+                            @foreach ($roles as $role)
+                                @if (auth()->user()->hasRole('admin_comum') && in_array($role->name, ['admin_master', 'financeiro']))
+                                    @continue
+                                @endif
+                                <option value="{{ $role->name }}">{{ strtoupper(str_replace('_', ' ', $role->name)) }}
+                                </option>
                             @endforeach
                         </select>
                     </div>

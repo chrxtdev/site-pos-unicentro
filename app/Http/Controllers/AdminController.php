@@ -7,6 +7,10 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
+use App\Models\Disciplina;
+use App\Models\Atividade;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 
 class AdminController extends Controller
 {
@@ -35,7 +39,9 @@ class AdminController extends Controller
         $user = auth()->user();
         $inscricao = Signin::where('email', $user->email)->first();
 
-        if (!$inscricao && $user->is_admin) {
+        $isAdmin = $user->is_admin || $user->hasRole(['admin_master', 'financeiro', 'admin_comum', 'professor']);
+
+        if (!$inscricao && $isAdmin) {
             $inscricao = new Signin([
                 'id' => 0,
                 'nome' => $user->name,
@@ -76,8 +82,10 @@ class AdminController extends Controller
         $user = auth()->user();
         $inscricao = \App\Models\Signin::where('email', $user->email)->first();
 
+        $isAdmin = $user->is_admin || $user->hasRole(['admin_master', 'financeiro', 'admin_comum', 'professor']);
+
         // O redirecionamento e lógica de segurança são idênticos ao principal
-        if (!$inscricao && $user->is_admin) {
+        if (!$inscricao && $isAdmin) {
             $inscricao = new \App\Models\Signin([
                 'id' => 0,
                 'nome' => $user->name,
@@ -92,8 +100,77 @@ class AdminController extends Controller
             return redirect()->route('inscricao.index')->withErrors(['login' => 'Nenhuma inscrição ativa encontrada para este e-mail. Por favor, inscreva-se primeiro.']);
         }
 
-        // TODO: Futuramente injetar o Array/Collection de Faturas Asaas aqui (Asaas API)
-        $faturas = collect([]); 
+        // Busca as faturas reais no Asaas se houver um parcelamento vinculado
+        $faturas = collect([]);
+        $asaasService = app(\App\Services\AsaasService::class);
+
+        // Auto-sincronização para inscrições feitas antes da migração de IDs
+        if (!$inscricao->asaas_installment_id && $inscricao->asaas_payment_id) {
+            try {
+                $response = \Illuminate\Support\Facades\Http::withHeaders([
+                    'access_token' => config('services.asaas.key'),
+                ])->get(config('services.asaas.url') . '/payments/' . $inscricao->asaas_payment_id);
+                
+                if ($response->successful()) {
+                    $dados = $response->json();
+                    $inscricao->update([
+                        'asaas_customer_id' => $dados['customer'] ?? null,
+                        'asaas_installment_id' => $dados['installment'] ?? null,
+                    ]);
+                }
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::warning('Erro ao sincronizar IDs Asaas: ' . $e->getMessage());
+            }
+        }
+
+        $faturasRaw = collect([]);
+
+        if ($inscricao->asaas_installment_id) {
+            $faturasRaw = $asaasService->buscarFaturasParcelamento($inscricao->asaas_installment_id);
+        } elseif ($inscricao->asaas_payment_id) {
+            try {
+                $response = \Illuminate\Support\Facades\Http::withHeaders([
+                    'access_token' => config('services.asaas.key'),
+                ])->get(config('services.asaas.url') . '/payments/' . $inscricao->asaas_payment_id);
+                
+                if ($response->successful()) {
+                    $faturasRaw = collect([$response->json()]);
+                }
+            } catch (\Exception $e) {
+                // Silencioso
+            }
+        }
+            
+        // Paginação Manual (3-4 por página conforme pedido)
+        $perPage = 4;
+        $currentPage = Paginator::resolveCurrentPage('page') ?: 1;
+        $items = $faturasRaw->forPage($currentPage, $perPage);
+        
+        $faturas = new LengthAwarePaginator(
+            $items,
+            $faturasRaw->count(),
+            $perPage,
+            $currentPage,
+            ['path' => Paginator::resolveCurrentPath(), 'pageName' => 'page']
+        );
+
+        // Auto-Cura (Fallback de Webhook): 
+        // Se a inscrição consta como pendente, mas a API do Asaas retornou alguma fatura já paga, aprova!
+        if ($inscricao->status_pagamento !== 'pago' && $faturasRaw->count() > 0) {
+            $faturaPaga = $faturasRaw->firstWhere(function ($fatura) {
+                return in_array($fatura['status'], ['RECEIVED', 'CONFIRMED', 'RECEIVED_IN_CASH']);
+            });
+
+            if ($faturaPaga) {
+                $inscricao->status_pagamento = 'pago';
+                if (!$inscricao->matricula) {
+                    $geradorService = app(\App\Services\GeradorMatriculaService::class);
+                    $inscricao->matricula = $geradorService->gerarMatricula($inscricao);
+                }
+                $inscricao->save();
+                \Illuminate\Support\Facades\Log::info('Auto-cura Asaas na aba Financeiro: Pagamento detectado como Pago.', ['signin' => $inscricao->id]);
+            }
+        }
         
         return view('portal.financeiro', compact('inscricao', 'faturas'));
     }
@@ -171,6 +248,70 @@ class AdminController extends Controller
         $user = auth()->user();
         $inscricao = Signin::where('email', $user->email)->first();
         return view('portal.documentos', compact('inscricao'));
+    }
+
+    public function portalMural(Disciplina $disciplina = null)
+    {
+        $user = auth()->user();
+        $inscricao = Signin::where('email', $user->email)->first();
+
+        if (!$inscricao && $user->is_admin) {
+            $inscricao = new Signin([
+                'id' => 0,
+                'nome' => $user->name,
+                'pos_graduacao' => 'Visualização de Admin',
+            ]);
+        } elseif (!$inscricao) {
+            auth()->logout();
+            return redirect()->route('inscricao.index')->withErrors(['login' => 'Nenhuma inscrição.']);
+        }
+
+        // Busca matrículas do aluno para renderizar o menu lateral do mural
+        $matriculas = \App\Models\MatriculaDisciplina::where('signin_id', $inscricao->id ?? 0)
+            ->with('disciplina')
+            ->get();
+            
+        // Se nenhuma matéria foi passada, seleciona a primeira como padrão
+        if (!$disciplina && $matriculas->isNotEmpty()) {
+            return redirect()->route('aluno.mural', $matriculas->first()->disciplina_id);
+        }
+
+        // Proteção: Garante que o aluno ou admin tenha acesso àquela matéria
+        if ($disciplina && $inscricao->id > 0) {
+            $temAcesso = $matriculas->contains('disciplina_id', $disciplina->id);
+            if (!$temAcesso && !$user->is_admin) {
+                return abort(403, 'Você não está matriculado nesta disciplina.');
+            }
+        }
+
+        $avisos = collect();
+        if ($disciplina) {
+            $avisos = Atividade::where('disciplina_id', $disciplina->id)
+                ->with('professor')
+                ->latest()
+                ->get();
+        }
+
+        return view('portal.mural', compact('inscricao', 'matriculas', 'disciplina', 'avisos'));
+    }
+
+    public function downloadBoletim()
+    {
+        $user = auth()->user();
+        $inscricao = \App\Models\Signin::where('email', $user->email)->first();
+
+        if (!$inscricao) {
+            return back()->withErrors(['erro' => 'Inscrição não encontrada.']);
+        }
+
+        $matriculas = \App\Models\MatriculaDisciplina::where('signin_id', $inscricao->id)
+            ->with(['disciplina.professor', 'notas'])
+            ->get();
+
+        $pdf = Pdf::loadView('portal.boletim-pdf', compact('inscricao', 'matriculas'))
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->stream('boletim-escolar-' . ($inscricao->matricula ?? $inscricao->id) . '.pdf');
     }
 
     public function downloadMatricula()

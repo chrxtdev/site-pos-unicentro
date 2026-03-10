@@ -139,9 +139,16 @@
                     <div>
                         <label for="senha" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Nova
                             Senha</label>
-                        <input type="password" name="senha" id="senha"
-                            class="mt-1 block w-full rounded-md border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-black dark:text-white font-medium shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            placeholder="Deixe em branco para manter a senha">
+                        <div class="relative">
+                            <input type="password" name="senha" id="senha"
+                                class="mt-1 block w-full rounded-md border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-black dark:text-white font-medium shadow-sm focus:border-indigo-500 focus:ring-indigo-500 pr-10"
+                                placeholder="Deixe em branco para manter a senha">
+                            <button type="button" tabindex="-1"
+                                onclick="const p=document.getElementById('senha'); const i=this.querySelector('i'); if(p.type==='password'){p.type='text'; i.classList.remove('fa-eye'); i.classList.add('fa-eye-slash');}else{p.type='password'; i.classList.remove('fa-eye-slash'); i.classList.add('fa-eye');}"
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-indigo-600 focus:outline-none">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
                         @error('senha')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
@@ -152,9 +159,16 @@
                         <label for="senha_confirmation"
                             class="block text-sm font-medium text-slate-700 dark:text-slate-300">Corfirmar Nova
                             Senha</label>
-                        <input type="password" name="senha_confirmation" id="senha_confirmation"
-                            class="mt-1 block w-full rounded-md border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-black dark:text-white font-medium shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            placeholder="Repita a nova senha">
+                        <div class="relative">
+                            <input type="password" name="senha_confirmation" id="senha_confirmation"
+                                class="mt-1 block w-full rounded-md border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-black dark:text-white font-medium shadow-sm focus:border-indigo-500 focus:ring-indigo-500 pr-10"
+                                placeholder="Repita a nova senha">
+                            <button type="button" tabindex="-1"
+                                onclick="const p=document.getElementById('senha_confirmation'); const i=this.querySelector('i'); if(p.type==='password'){p.type='text'; i.classList.remove('fa-eye'); i.classList.add('fa-eye-slash');}else{p.type='password'; i.classList.remove('fa-eye-slash'); i.classList.add('fa-eye');}"
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-indigo-600 focus:outline-none">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 

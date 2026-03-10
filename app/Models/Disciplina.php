@@ -10,7 +10,7 @@ class Disciplina extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['curso_id', 'professor_id', 'nome', 'carga_horaria'];
+    protected $fillable = ['curso_id', 'professor_id', 'nome', 'carga_horaria', 'status'];
 
     public function curso()
     {
@@ -25,5 +25,10 @@ class Disciplina extends Model
     public function matriculas()
     {
         return $this->hasMany(MatriculaDisciplina::class);
+    }
+
+    public function atividades()
+    {
+        return $this->hasMany(\App\Models\Atividade::class);
     }
 }

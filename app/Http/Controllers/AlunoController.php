@@ -11,11 +11,22 @@ class AlunoController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $processoId = $request->input('processo_seletivo_id') ?? $request->input('processo');
 
         $alunos = Signin::when($search, function ($query) use ($search) {
             $query->where('nome', 'like', "%{$search}%")
                   ->orWhere('email', 'like', "%{$search}%");
-        })->paginate(25)->withQueryString();
+        })
+        ->when($processoId, function ($query) use ($processoId) {
+            // Como signins armazena o nome da pos em string, buscamos as ofertas do processo
+            $cursosDoProcesso = \App\Models\Oferta::where('processo_seletivo_id', $processoId)
+                ->with('curso')
+                ->get()
+                ->pluck('curso.nome')
+                ->toArray();
+            
+            $query->whereIn('pos_graduacao', $cursosDoProcesso);
+        })->latest()->paginate(25)->withQueryString();
 
         return view('alunos.index', compact('alunos', 'search'));
     }

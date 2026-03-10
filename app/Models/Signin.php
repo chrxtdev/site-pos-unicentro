@@ -28,6 +28,8 @@ class Signin extends Model
         'pos_graduacao',
         'login',
         'asaas_payment_id',
+        'asaas_customer_id',
+        'asaas_installment_id',
         'status_pagamento',
     ];
 

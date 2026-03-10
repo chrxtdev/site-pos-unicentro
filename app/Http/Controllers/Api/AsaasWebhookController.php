@@ -31,19 +31,28 @@ class AsaasWebhookController extends Controller
 
         $event = $payload['event'] ?? null;
         $paymentId = $payload['payment']['id'] ?? null;
+        $installmentId = $payload['payment']['installment'] ?? null;
         $status = $payload['payment']['status'] ?? null;
 
         // 3. Log sanitizado (apenas IDs e status, sem dados pessoais)
         Log::info('Webhook Asaas recebido.', [
             'event' => $event,
             'payment_id' => $paymentId,
+            'installment_id' => $installmentId,
             'status' => $status,
         ]);
 
         $eventosValidos = ['PAYMENT_RECEIVED', 'PAYMENT_CONFIRMED'];
 
-        if ($event && in_array($event, $eventosValidos) && $paymentId) {
-            $inscricao = Signin::where('asaas_payment_id', $paymentId)->first();
+        if ($event && in_array($event, $eventosValidos)) {
+            $inscricao = Signin::where(function($query) use ($paymentId, $installmentId) {
+                if ($paymentId) {
+                    $query->orWhere('asaas_payment_id', $paymentId);
+                }
+                if ($installmentId) {
+                    $query->orWhere('asaas_installment_id', $installmentId);
+                }
+            })->first();
 
             if ($inscricao) {
                 $inscricao->status_pagamento = 'pago';

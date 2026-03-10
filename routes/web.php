@@ -44,6 +44,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/portal/notas', [AdminController::class , 'portalNotas'])->name('aluno.notas');
         Route::get('/portal/documentos', [AdminController::class , 'portalDocumentos'])->name('aluno.documentos');
         Route::get('/portal/documentos/matricula', [AdminController::class , 'downloadMatricula'])->name('aluno.documentos.matricula');
+        Route::get('/portal/mural/{disciplina?}', [AdminController::class , 'portalMural'])->name('aluno.mural');
+        Route::get('/portal/boletim/pdf', [AdminController::class , 'downloadBoletim'])->name('aluno.boletim.pdf');
 
         // Rota de retorno do Impersonate (fora do grupo admin para o aluno impersonado conseguir acessar)
         Route::get('/impersonate-leave', [AdminController::class , 'leaveImpersonate'])->name('admin.impersonate.leave');
@@ -69,11 +71,17 @@ Route::middleware('auth')->group(function () {
             Route::get('/alunos/{id}/edit', [AlunoController::class , 'edit'])->name('alunos.edit');
             Route::put('/alunos/{id}', [AlunoController::class , 'update'])->name('alunos.update');
 
-            Route::get('/configuracoes', [ConfiguracaoController::class , 'index'])->name('configuracoes.index');
-            Route::post('/configuracoes/app', [ConfiguracaoController::class, 'storeAppConfig'])->name('configuracoes.storeAppConfig');
-            Route::post('/configuracoes/admin', [ConfiguracaoController::class , 'storeAdmin'])->name('configuracoes.storeAdmin');
-            Route::put('/configuracoes/admin/{admin}', [ConfiguracaoController::class , 'updateAdmin'])->name('configuracoes.updateAdmin');
-            Route::delete('/configuracoes/admin/{admin}', [ConfiguracaoController::class , 'destroyAdmin'])->name('configuracoes.destroyAdmin');
+            // Configurações Globais e Usuários (Apenas Master ou Admin Comum)
+            Route::group(['middleware' => ['role:admin_master|admin_comum']], function () {
+                Route::get('/configuracoes', [ConfiguracaoController::class, 'index'])->name('configuracoes.index');
+                Route::post('/configuracoes/admin', [ConfiguracaoController::class, 'storeAdmin'])->name('configuracoes.storeAdmin');
+                Route::put('/configuracoes/admin/{admin}', [ConfiguracaoController::class, 'updateAdmin'])->name('configuracoes.updateAdmin');
+                Route::delete('/configuracoes/admin/{admin}', [ConfiguracaoController::class, 'destroyAdmin'])->name('configuracoes.destroyAdmin');
+            });
+            
+            // Configurações do App (apenas master suporta para proteger asaas_tokens)
+            Route::post('/configuracoes/app', [ConfiguracaoController::class, 'storeAppConfig'])
+                ->middleware(['role:admin_master'])->name('configuracoes.storeAppConfig');
 
             // Setor Financeiro (Apenas administradores com cargo Master ou Financeiro)
             Route::group(['middleware' => ['role:admin_master|financeiro']], function () {
@@ -89,6 +97,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/disciplinas', [NotaController::class, 'index'])->name('professor.disciplinas.index')->middleware('can:view_notas');
             Route::get('/disciplinas/{disciplina}/notas', [NotaController::class, 'show'])->name('professor.notas.show')->middleware('can:view_notas');
             Route::post('/disciplinas/{disciplina}/notas', [NotaController::class, 'update'])->name('professor.notas.update')->middleware('can:manage_notas');
+            Route::post('/disciplinas/{disciplina}/fechar', [NotaController::class, 'fechar'])->name('professor.notas.fechar')->middleware('can:manage_notas');
             
             // Atividades (Mural)
             Route::get('/disciplinas/{disciplina}/atividades', [AtividadeController::class, 'index'])->name('professor.atividades.index')->middleware('can:view_atividades');

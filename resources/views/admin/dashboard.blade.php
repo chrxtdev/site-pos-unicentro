@@ -3,84 +3,85 @@
 @section('title', 'Painel de Controle')
 
 @section('content')
-    <div class="max-w-7xl mx-auto flex flex-col gap-8">
+    <div class="max-w-7xl mx-auto flex flex-col gap-8 animate-fade-in">
         <!-- KPI Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Card 1 -->
             <div
-                class="relative overflow-hidden bg-white dark:bg-surface-dark p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow group">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="bg-blue-50 dark:bg-blue-500/10 p-3 rounded-xl">
-                        <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-2xl">groups</span>
-                    </div>
-                    <span
-                        class="flex items-center gap-1 text-sm font-medium text-primary bg-primary/10 px-2 py-1 rounded-lg">
-                        <span class="material-symbols-outlined text-sm">trending_up</span> Em Alta
-                    </span>
+                class="glass-card p-8 rounded-[2rem] border border-slate-200 dark:border-white/5 shadow-soft hover:shadow-2xl transition-all duration-500 group relative overflow-hidden">
+                <div
+                    class="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-all">
                 </div>
-                <h3 class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total de Matrículas</h3>
-                <p class="text-3xl font-bold text-slate-900 dark:text-white mt-1">
-                    {{ number_format($totalAlunos, 0, ',', '.') }}</p>
+                <div class="flex justify-between items-start mb-6">
+                    <div
+                        class="bg-blue-500/10 p-4 rounded-2xl text-blue-500 group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                        <span class="material-symbols-outlined text-3xl">groups</span>
+                    </div>
+                </div>
+                <h3 class="text-slate-500 dark:text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Total
+                    de Matrículas</h3>
+                <p class="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">
+                    {{ number_format($totalAlunos, 0, ',', '.') }}
+                </p>
             </div>
+
             <!-- Card 2 -->
             <div
-                class="relative overflow-hidden bg-white dark:bg-surface-dark p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow group">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="bg-primary/10 p-3 rounded-xl">
-                        <span class="material-symbols-outlined text-primary text-2xl">payments</span>
-                    </div>
-                    <span
-                        class="flex items-center gap-1 text-sm font-medium text-primary bg-primary/10 px-2 py-1 rounded-lg">
-                        <span class="material-symbols-outlined text-sm">trending_up</span> Mês Atual
-                    </span>
+                class="glass-card p-8 rounded-[2rem] border border-slate-200 dark:border-white/5 shadow-soft hover:shadow-2xl transition-all duration-500 group relative overflow-hidden">
+                <div
+                    class="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-all">
                 </div>
-                <h3 class="text-slate-500 dark:text-slate-400 text-sm font-medium">Receita Bruta (Mês)</h3>
-                <p class="text-3xl font-bold text-slate-900 dark:text-white mt-1">R$
-                    {{ number_format($receitaMensal, 2, ',', '.') }}</p>
+                <div class="flex justify-between items-start mb-6">
+                    <div
+                        class="bg-primary/10 p-4 rounded-2xl text-primary group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                        <span class="material-symbols-outlined text-3xl">payments</span>
+                    </div>
+                </div>
+                <h3 class="text-slate-500 dark:text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] mb-1">
+                    Receita Mensal</h3>
+                <p class="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">
+                    R$ {{ number_format($receitaMensal, 2, ',', '.') }}
+                </p>
             </div>
+
             <!-- Card 3 -->
             <div
-                class="relative overflow-hidden bg-white dark:bg-surface-dark p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow group">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="bg-purple-50 dark:bg-purple-500/10 p-3 rounded-xl">
-                        <span
-                            class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-2xl">app_registration</span>
-                    </div>
-                    <span
-                        class="flex items-center gap-1 text-sm font-medium text-primary bg-primary/10 px-2 py-1 rounded-lg">
-                        <span class="material-symbols-outlined text-sm">trending_up</span> Em Tempo Real
-                    </span>
+                class="glass-card p-8 rounded-[2rem] border border-slate-200 dark:border-white/5 shadow-soft hover:shadow-2xl transition-all duration-500 group relative overflow-hidden">
+                <div
+                    class="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl group-hover:bg-purple-500/20 transition-all">
                 </div>
-                <h3 class="text-slate-500 dark:text-slate-400 text-sm font-medium">Inscritos Hoje</h3>
-                <p class="text-3xl font-bold text-slate-900 dark:text-white mt-1">{{ $inscricoesHoje }}</p>
+                <div class="flex justify-between items-start mb-6">
+                    <div
+                        class="bg-purple-500/10 p-4 rounded-2xl text-purple-400 group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                        <span class="material-symbols-outlined text-3xl">app_registration</span>
+                    </div>
+                </div>
+                <h3 class="text-slate-500 dark:text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] mb-1">
+                    Inscritos Hoje</h3>
+                <p class="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">
+                    {{ $inscricoesHoje }}
+                </p>
             </div>
         </div>
         <!-- Recent Enrollments -->
         <div class="flex flex-col gap-4">
             <div class="flex items-center justify-between">
                 <h3 class="text-xl font-bold text-slate-900 dark:text-white">Matrículas Recentes</h3>
-                <button class="text-sm font-medium text-primary hover:text-primary/80 transition-colors">Ver Todas</button>
+                <a href="{{ route('alunos.index') }}"
+                    class="text-sm font-medium text-primary hover:text-primary/80 transition-colors">Ver Todas</a>
             </div>
-            <div
-                class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm">
-                <div class="overflow-x-auto">
+            <div class="glass-card rounded-[2rem] shadow-soft border border-slate-200 dark:border-white/5 overflow-hidden">
+                <div class="overflow-x-auto custom-scrollbar">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
-                                <th
-                                    class="p-4 pl-6 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                                    Aluno(a)</th>
-                                <th
-                                    class="p-4 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                                    Curso Escolhido</th>
-                                <th
-                                    class="p-4 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                                    Data</th>
-                                <th
-                                    class="p-4 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                                    Método</th>
-                                <th
-                                    class="p-4 pr-6 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 text-right">
+                            <tr class="bg-slate-50/50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-white/5">
+                                <th class="p-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Aluno(a)
+                                </th>
+                                <th class="p-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Curso
+                                    Escolhido</th>
+                                <th class="p-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Data</th>
+                                <th class="p-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Método</th>
+                                <th class="p-6 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 text-right">
                                     Status</th>
                             </tr>
                         </thead>
