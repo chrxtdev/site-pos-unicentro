@@ -47,7 +47,7 @@ class AlunoController extends Controller
     {
         $aluno = Signin::findOrFail($id);
 
-        $request->validate([
+        $validated = $request->validate([
             'nome' => 'required|string|max:255',
             'cpf' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:signins,email,' . $aluno->id,
@@ -68,10 +68,10 @@ class AlunoController extends Controller
             'senha' => 'nullable|string|min:8|confirmed',
         ]);
 
-        $data = $request->except('senha', 'senha_confirmation');
+        $data = collect($validated)->except(['senha', 'senha_confirmation'])->toArray();
 
         if ($request->filled('senha')) {
-            $data['senha'] = bcrypt($request->senha);
+            $data['senha'] = bcrypt($validated['senha']);
         }
 
         $aluno->update($data);

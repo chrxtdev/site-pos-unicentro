@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Professor;
 
 use App\Http\Controllers\Controller;
+use App\Models\Curso;
 use App\Models\Disciplina;
 use App\Models\MatriculaDisciplina;
 use App\Models\Nota;
@@ -14,14 +15,82 @@ class NotaController extends Controller
     {
         $user = auth()->user();
         
-        // Se for admin master/comum, ve todas as disciplinas. Se for professor, ve so as dele.
+        // Se for admin, vê todos os cursos. Se for professor, vê apenas cursos que têm disciplinas dele
         if ($user->hasRole('admin_master') || $user->hasRole('admin_comum')) {
-            $disciplinas = Disciplina::with('curso')->withCount('matriculas')->get();
+            $cursos = Curso::withCount('disciplinas')->get();
         } else {
-            $disciplinas = Disciplina::where('professor_id', $user->id)->with('curso')->withCount('matriculas')->get();
+            $cursos = Curso::whereHas('disciplinas', function ($query) use ($user) {
+                $query->where('professor_id', $user->id);
+            })->withCount(['disciplinas' => function ($query) use ($user) {
+                $query->where('professor_id', $user->id);
+            }])->get();
         }
 
-        return view('professor.disciplinas.index', compact('disciplinas'));
+        return view('professor.disciplinas.index', compact('cursos'));
+    }
+
+    public function cursoDisciplinas(Curso $curso)
+    {
+        $user = auth()->user();
+        
+        // Proteção de acesso
+        if (!$user->hasRole('admin_master') && !$user->hasRole('admin_comum')) {
+            $temAcesso = $curso->disciplinas()->where('professor_id', $user->id)->exists();
+            if (!$temAcesso) {
+                abort(403, 'Você não possui disciplinas vinculadas a esta Turma.');
+            }
+            $disciplinas = $curso->disciplinas()->where('professor_id', $user->id)->withCount('matriculas')->get();
+        } else {
+            $disciplinas = $curso->disciplinas()->withCount('matriculas')->get();
+        }
+
+        return view('professor.disciplinas.materias', compact('curso', 'disciplinas'));
+    }
+
+    public function storeFast(Request $request)
+    {
+        $user = auth()->user();
+        if (!$user->hasRole('admin_master') && !$user->hasRole('admin_comum')) {
+            abort(403, 'Acesso negado.');
+        }
+
+        $request->validate([
+            'curso_id' => 'required|exists:cursos,id',
+            'nome' => 'required|string|max:255',
+            'carga_horaria' => 'required|integer|min:1',
+            'professor_id' => 'nullable|exists:users,id',
+        ]);
+
+        $disciplina = Disciplina::create([
+            'curso_id' => $request->curso_id,
+            'nome' => $request->nome,
+            'carga_horaria' => $request->carga_horaria,
+            'professor_id' => $request->professor_id,
+        ]);
+
+        return redirect()->back()->with('success', 'Disciplina criada e vinculada a turma com sucesso!');
+    }
+
+    public function updateFast(Request $request, Disciplina $disciplina)
+    {
+        $user = auth()->user();
+        if (!$user->hasRole('admin_master') && !$user->hasRole('admin_comum')) {
+            abort(403, 'Acesso negado.');
+        }
+
+        $request->validate([
+            'nome' => 'required|string|max:255',
+            'carga_horaria' => 'required|integer|min:1',
+            'professor_id' => 'nullable|exists:users,id',
+        ]);
+
+        $disciplina->update([
+            'nome' => $request->nome,
+            'carga_horaria' => $request->carga_horaria,
+            'professor_id' => $request->professor_id,
+        ]);
+
+        return redirect()->back()->with('success', 'Disciplina atualizada com sucesso!');
     }
 
     public function show(Disciplina $disciplina)
@@ -84,14 +153,34 @@ class NotaController extends Controller
                     ]
                 );
 
-                // Automação do status da disciplina
-                if ($temNota && $media_final >= 7.0 && $b1_total > 0 && $b2_total > 0) {
-                    $matricula->update(['status' => 'aprovado']);
-                } elseif ($temNota && $media_final < 7.0 && $b1_total > 0 && $b2_total > 0) {
-                    $matricula->update(['status' => 'reprovado']);
+                if (isset($dados['faltas']) && is_numeric($dados['faltas'])) {
+                    $faltasForm = (int) $dados['faltas'];
+                    $faltasFinal = max(0, min($faltasForm, $disciplina->carga_horaria));
                 } else {
-                    $matricula->update(['status' => 'cursando']);
+                    $faltasFinal = $matricula->faltas ?? 0;
                 }
+
+                $presencasFinal = $disciplina->carga_horaria - $faltasFinal;
+
+                $aprovadoPorNota = ($temNota && $media_final >= 7.0 && $b1_total > 0 && $b2_total > 0);
+                $freqPercent = $disciplina->carga_horaria > 0 ? ($presencasFinal / $disciplina->carga_horaria) : 1;
+                $aprovadoPorFalta = $freqPercent >= 0.75;
+                
+                $novoStatus = 'cursando';
+
+                if ($b1_total > 0 && $b2_total > 0) {
+                    if ($aprovadoPorNota && $aprovadoPorFalta) {
+                        $novoStatus = 'aprovado';
+                    } else {
+                        $novoStatus = 'reprovado';
+                    }
+                }
+
+                $matricula->update([
+                    'faltas' => $faltasFinal,
+                    'presencas' => $presencasFinal,
+                    'status' => $novoStatus
+                ]);
             }
         }
 

@@ -46,12 +46,12 @@ class CursoController extends Controller
 
     public function update(Request $request, Curso $curso)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nome' => 'required|string|max:255',
             'tipo' => 'required|in:Graduação,Pós-Graduação,Mestrado,Doutorado',
         ]);
 
-        $curso->update($request->validated());
+        $curso->update($validated);
 
         return redirect()->route('cursos.index')->with('success', 'Curso atualizado com sucesso!');
     }

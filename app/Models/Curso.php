@@ -12,4 +12,9 @@ class Curso extends Model
     {
         return $this->hasMany(Oferta::class);
     }
+
+    public function disciplinas()
+    {
+        return $this->hasMany(Disciplina::class);
+    }
 }

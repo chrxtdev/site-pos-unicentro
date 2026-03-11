@@ -47,4 +47,14 @@ class Signin extends Model
             'cep' => 'encrypted',
         ];
     }
+
+    public function presencas()
+    {
+        return $this->hasMany(AulaAluno::class, 'signin_id');
+    }
+
+    public function matriculaDisciplinas()
+    {
+        return $this->hasMany(MatriculaDisciplina::class, 'signin_id');
+    }
 }

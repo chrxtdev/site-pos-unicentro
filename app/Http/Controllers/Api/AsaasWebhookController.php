@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Signin;
 use App\Services\GeradorMatriculaService;
+use App\Services\MatriculaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -64,6 +65,11 @@ class AsaasWebhookController extends Controller
                 }
 
                 $inscricao->save();
+
+                // Enturma o aluno nas disciplinas do curso base
+                $matriculaService = app(MatriculaService::class);
+                $matriculaService->vincularDisciplinas($inscricao);
+
                 Log::info('Pagamento confirmado e matrícula gerada.', [
                     'signin_id' => $inscricao->id, 
                     'payment_id' => $paymentId,

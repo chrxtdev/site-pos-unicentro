@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\Log;
 
 class FinanceiroController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         // Administradores e role financeiro têm acesso via Middleware
@@ -45,9 +42,6 @@ class FinanceiroController extends Controller
         return view('admin.financeiro.index', compact('alunos'));
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id, AsaasService $asaasService)
     {
         $aluno = Signin::findOrFail($id);

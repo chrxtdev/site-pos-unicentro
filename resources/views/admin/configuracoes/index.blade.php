@@ -148,8 +148,10 @@
                                         {{ strtoupper(substr($admin->name, 0, 2)) }}
                                     </div>
                                     <div>
-                                        <p class="text-sm font-semibold text-slate-900 dark:text-white">{{ $admin->name }}
-                                        </p>
+                                        <div class="flex items-center gap-2">
+                                            <p class="text-sm font-semibold text-slate-900 dark:text-white">{{ $admin->name }}</p>
+                                            <span class="text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 px-1.5 py-0.5 rounded-md border border-slate-200 dark:border-slate-700" title="Use este ID para vincular o professor à disciplinas">ID: {{ $admin->id }}</span>
+                                        </div>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <p class="text-xs text-slate-500 dark:text-slate-400">{{ $admin->email }}</p>
                                             @if ($admin->roles->count() > 0)

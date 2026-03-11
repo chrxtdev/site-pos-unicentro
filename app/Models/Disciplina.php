@@ -31,4 +31,9 @@ class Disciplina extends Model
     {
         return $this->hasMany(\App\Models\Atividade::class);
     }
+
+    public function aulas()
+    {
+        return $this->hasMany(Aula::class);
+    }
 }

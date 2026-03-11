@@ -93,8 +93,11 @@ Route::middleware('auth')->group(function () {
 
         // Painel Acadêmico (Professor e Admins)
         Route::group(['prefix' => 'admin/academico', 'middleware' => ['admin']], function () {
-            // Notas (Diário de Turma)
+            // Notas (Diário de Turma) - Nova Hierarquia
             Route::get('/disciplinas', [NotaController::class, 'index'])->name('professor.disciplinas.index')->middleware('can:view_notas');
+            Route::get('/disciplinas/curso/{curso}', [NotaController::class, 'cursoDisciplinas'])->name('professor.disciplinas.curso')->middleware('can:view_notas');
+            Route::post('/disciplinas/fast', [NotaController::class, 'storeFast'])->name('professor.disciplinas.storeFast')->middleware('can:manage_notas');
+            Route::put('/disciplinas/{disciplina}/fast', [NotaController::class, 'updateFast'])->name('professor.disciplinas.updateFast')->middleware('can:manage_notas');
             Route::get('/disciplinas/{disciplina}/notas', [NotaController::class, 'show'])->name('professor.notas.show')->middleware('can:view_notas');
             Route::post('/disciplinas/{disciplina}/notas', [NotaController::class, 'update'])->name('professor.notas.update')->middleware('can:manage_notas');
             Route::post('/disciplinas/{disciplina}/fechar', [NotaController::class, 'fechar'])->name('professor.notas.fechar')->middleware('can:manage_notas');
@@ -104,6 +107,14 @@ Route::middleware('auth')->group(function () {
             Route::post('/disciplinas/{disciplina}/atividades', [AtividadeController::class, 'store'])->name('professor.atividades.store')->middleware('can:manage_atividades');
             Route::put('/atividades/{atividade}', [AtividadeController::class, 'update'])->name('professor.atividades.update')->middleware('can:manage_atividades');
             Route::delete('/atividades/{atividade}', [AtividadeController::class, 'destroy'])->name('professor.atividades.destroy')->middleware('can:manage_atividades');
+
+            // Aulas e Chamada
+            Route::get('/disciplinas/{disciplina}/aulas', [\App\Http\Controllers\Professor\AulaController::class, 'index'])->name('professor.aulas.index');
+            Route::get('/disciplinas/{disciplina}/aulas/create', [\App\Http\Controllers\Professor\AulaController::class, 'create'])->name('professor.aulas.create');
+            Route::post('/disciplinas/{disciplina}/aulas', [\App\Http\Controllers\Professor\AulaController::class, 'store'])->name('professor.aulas.store');
+            Route::get('/aulas/{aula}/edit', [\App\Http\Controllers\Professor\AulaController::class, 'edit'])->name('professor.aulas.edit');
+            Route::put('/aulas/{aula}', [\App\Http\Controllers\Professor\AulaController::class, 'update'])->name('professor.aulas.update');
+            Route::delete('/aulas/{aula}', [\App\Http\Controllers\Professor\AulaController::class, 'destroy'])->name('professor.aulas.destroy');
         });
 
         // Boletos

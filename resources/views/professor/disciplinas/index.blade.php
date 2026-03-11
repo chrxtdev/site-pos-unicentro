@@ -17,6 +17,13 @@
                     Gerencie seus diários e interaja com seus alunos
                 </p>
             </div>
+            @if(auth()->user()->hasRole('admin_master') || auth()->user()->hasRole('admin_comum'))
+            <div class="flex gap-3">
+                <a href="{{ route('cursos.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-emerald-600 text-white text-sm font-bold rounded-xl transition-all shadow-lg shadow-primary/30">
+                    <i class="fa-solid fa-plus"></i> Nova Turma
+                </a>
+            </div>
+            @endif
         </div>
 
         @if (session('error'))
@@ -27,40 +34,49 @@
         @endif
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @forelse($disciplinas as $disciplina)
+            @forelse($cursos as $curso)
                 <div
                     class="glass-card rounded-[2rem] border border-slate-200 dark:border-white/5 shadow-soft overflow-hidden flex flex-col group hover:shadow-2xl transition-all duration-500">
                     <div class="p-8 border-b border-slate-100 dark:border-white/5 flex-1 relative overflow-hidden">
                         <div
                             class="absolute top-0 right-0 -mr-8 -mt-8 w-24 h-24 bg-primary/5 rounded-full blur-xl group-hover:bg-primary/10 transition-all">
                         </div>
-                        <div class="flex items-center gap-2 mb-4">
+
+                        @if(auth()->user()->hasRole('admin_master') || auth()->user()->hasRole('admin_comum'))
+                            <div class="absolute top-4 right-4 flex gap-2">
+                                <a href="{{ route('cursos.edit', $curso->id) }}" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-blue-500 transition-colors" title="Editar Turma">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <form action="{{ route('cursos.destroy', $curso->id) }}" method="POST" class="inline" onsubmit="return confirm('Tem certeza que deseja apagar esta turma? Todas as matérias associadas serão perdidas!');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-red-500 transition-colors" title="Apagar Turma">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        @endif
+
+                        <div class="flex items-center gap-2 mb-4 mt-2">
                             <span
                                 class="text-[10px] font-black text-primary bg-primary/10 px-3 py-1 rounded-full uppercase tracking-widest border border-primary/20">
-                                {{ $disciplina->curso->nome }}
+                                Turma Base
                             </span>
                         </div>
                         <h3
                             class="text-xl font-black text-slate-900 dark:text-white leading-tight mb-4 group-hover:text-primary transition-colors">
-                            {{ $disciplina->nome }}
+                            {{ $curso->nome }}
                         </h3>
                         <div class="space-y-2">
                             <p class="text-xs font-bold text-slate-500 dark:text-slate-400 flex items-center gap-2">
-                                <i class="fa-regular fa-clock text-primary"></i> {{ $disciplina->carga_horaria }} Horas
-                            </p>
-                            <p class="text-xs font-bold text-slate-500 dark:text-slate-400 flex items-center gap-2">
-                                <i class="fa-solid fa-users text-primary"></i> {{ $disciplina->matriculas_count }} Alunos
+                                <i class="fa-solid fa-layer-group text-primary"></i> {{ $curso->disciplinas_count }} Disciplinas Encontradas
                             </p>
                         </div>
                     </div>
                     <div class="p-6 bg-slate-50/50 dark:bg-slate-900/50 flex gap-4">
-                        <a href="{{ route('professor.notas.show', $disciplina->id) }}"
-                            class="flex-1 flex justify-center items-center gap-2 py-3 px-4 bg-primary hover:bg-emerald-600 text-white text-xs font-black uppercase tracking-widest rounded-xl transition-all shadow-glow active:scale-95">
-                            <i class="fa-solid fa-clipboard-list"></i> Diário
-                        </a>
-                        <a href="{{ route('professor.atividades.index', $disciplina->id) }}"
-                            class="flex-1 flex justify-center items-center gap-2 py-3 px-4 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-black uppercase tracking-widest rounded-xl transition-all active:scale-95">
-                            <i class="fa-solid fa-bullhorn"></i> Mural
+                        <a href="{{ route('professor.disciplinas.curso', $curso->id) }}"
+                            class="w-full flex justify-center items-center gap-2 py-3 px-4 bg-primary hover:bg-emerald-600 text-white text-xs font-black uppercase tracking-widest rounded-xl transition-all shadow-glow active:scale-95">
+                            <i class="fa-solid fa-folder-open"></i> Acessar Turma
                         </a>
                     </div>
                 </div>

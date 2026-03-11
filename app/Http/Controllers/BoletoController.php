@@ -73,8 +73,6 @@ class BoletoController extends Controller
         return redirect()->back()->with('error', 'Não foi possível recuperar o boleto existente.');
     }
 
-    // Funções de formato interno e api removidas (migradas para o AsaasService)
-
 
     private function enviarWhatsApp(string $telefone, string $linkBoleto, string $nome): bool
     {

@@ -33,11 +33,28 @@ class AsaasService
             'access_token' => config('services.asaas.key'),
         ])->get(config('services.asaas.url') . '/payments', [
             'installment' => $installmentId,
-            'limit' => 100, // Garante que pega todas as 12
+            'limit' => 100,
         ]);
 
         if ($response->failed()) {
             Log::error('Erro ao buscar faturas no Asaas:', ['response' => $response->body()]);
+            return collect();
+        }
+
+        return collect($response->json('data'))->sortBy('dueDate');
+    }
+
+    public function buscarPagamentosPorCliente(string $customerId)
+    {
+        $response = Http::withHeaders([
+            'access_token' => config('services.asaas.key'),
+        ])->get(config('services.asaas.url') . '/payments', [
+            'customer' => $customerId,
+            'limit' => 100,
+        ]);
+
+        if ($response->failed()) {
+            Log::error('Erro ao buscar pagamentos por cliente no Asaas:', ['response' => $response->body()]);
             return collect();
         }
 

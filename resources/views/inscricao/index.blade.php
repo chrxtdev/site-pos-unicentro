@@ -23,11 +23,11 @@
 </head>
 
 <body
-    class="bg-slate-50 dark:bg-slate-900 min-h-screen flex flex-col font-sans text-slate-900 dark:text-slate-100 selection:bg-indigo-500 selection:text-white">
+    class="bg-slate-50 dark:bg-slate-900 min-h-screen flex flex-col font-sans text-slate-900 dark:text-slate-100 selection:bg-blue-500 selection:text-white">
 
     <!-- Header -->
     <header
-        class="bg-indigo-900 dark:bg-slate-950 text-white p-4 flex items-center justify-between shadow-lg relative z-20">
+        class="bg-blue-900 dark:bg-slate-950 text-white p-4 flex items-center justify-between shadow-lg relative z-20">
         <div class="flex items-center gap-4">
             <img src="{{ asset('images/unicentroma.png') }}" alt="Unicentro MA" class="h-12 drop-shadow-md">
         </div>
@@ -35,7 +35,7 @@
             Inscrição na Pós-Graduação
         </h1>
         <a href="{{ route('login') }}"
-            class="text-sm font-medium text-indigo-200 hover:text-white hover:underline transition hidden md:block">Portal
+            class="text-sm font-medium text-blue-200 hover:text-white hover:underline transition hidden md:block">Portal
             do Aluno</a>
     </header>
 
@@ -43,7 +43,7 @@
 
         <!-- Efeitos de Fundo (Glow) -->
         <div
-            class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500/20 dark:bg-indigo-600/20 blur-[120px] rounded-full pointer-events-none">
+            class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-500/20 dark:bg-blue-600/20 blur-[120px] rounded-full pointer-events-none">
         </div>
         <div
             class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/20 dark:bg-blue-600/20 blur-[120px] rounded-full pointer-events-none">
@@ -104,42 +104,42 @@
                     <!-- Linha de Progresso -->
                     <div class="absolute inset-0 flex items-center justify-between z-0"
                         style="top: 50%; transform: translateY(-50%); padding: 0 10%;">
-                        <div class="h-1 bg-indigo-600 dark:bg-indigo-500 rounded-full transition-all duration-500 ease-out"
+                        <div class="h-1 bg-blue-600 dark:bg-blue-500 rounded-full transition-all duration-500 ease-out"
                             :style="'width: ' + ((step - 1) / (maxStep - 1)) * 100 + '%'"></div>
                     </div>
 
                     <!-- Passos -->
                     <div class="relative z-10 flex flex-col items-center">
                         <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-500 shadow-md"
-                            :class="step >= 1 ? 'bg-indigo-600 text-white ring-4 ring-indigo-100 dark:ring-indigo-900/50' :
+                            :class="step >= 1 ? 'bg-blue-600 text-white ring-4 ring-blue-100 dark:ring-blue-900/50' :
                                 'bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400'">
                             <i class="fa-solid fa-user" x-show="step < 2"></i>
                             <i class="fa-solid fa-check" x-show="step >= 2"></i>
                         </div>
                         <span class="text-xs sm:text-sm mt-3 font-semibold transition-colors uppercase tracking-wider"
-                            :class="step >= 1 ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400'">Dados
+                            :class="step >= 1 ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400'">Dados
                             Pessoais</span>
                     </div>
 
                     <div class="relative z-10 flex flex-col items-center">
                         <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-500 shadow-md"
-                            :class="step >= 2 ? 'bg-indigo-600 text-white ring-4 ring-indigo-100 dark:ring-indigo-900/50' :
+                            :class="step >= 2 ? 'bg-blue-600 text-white ring-4 ring-blue-100 dark:ring-blue-900/50' :
                                 'bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400'">
                             <i class="fa-solid fa-location-dot" x-show="step < 3"></i>
                             <i class="fa-solid fa-check" x-show="step >= 3"></i>
                         </div>
                         <span class="text-xs sm:text-sm mt-3 font-semibold transition-colors uppercase tracking-wider"
-                            :class="step >= 2 ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400'">Endereço</span>
+                            :class="step >= 2 ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400'">Endereço</span>
                     </div>
 
                     <div class="relative z-10 flex flex-col items-center">
                         <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-500 shadow-md"
-                            :class="step >= 3 ? 'bg-indigo-600 text-white ring-4 ring-indigo-100 dark:ring-indigo-900/50' :
+                            :class="step >= 3 ? 'bg-blue-600 text-white ring-4 ring-blue-100 dark:ring-blue-900/50' :
                                 'bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400'">
                             <i class="fa-solid fa-graduation-cap"></i>
                         </div>
                         <span class="text-xs sm:text-sm mt-3 font-semibold transition-colors uppercase tracking-wider"
-                            :class="step >= 3 ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400'">Curso
+                            :class="step >= 3 ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400'">Curso
                             e Financeiro</span>
                     </div>
                 </div>
@@ -191,7 +191,7 @@
                                 class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Nome
                                 Completo *</label>
                             <input type="text" id="nome" name="nome" value="{{ old('nome') }}" required
-                                class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors uppercase px-4 py-2.5"
+                                class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-colors uppercase px-4 py-2.5"
                                 oninput="this.value = this.value.toUpperCase();">
                         </div>
 
@@ -201,7 +201,7 @@
                                 *</label>
                             <input type="text" id="cpf" name="cpf" value="{{ old('cpf') }}" required
                                 x-mask="999.999.999-99"
-                                class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors px-4 py-2.5"
+                                class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-colors px-4 py-2.5"
                                 placeholder="000.000.000-00">
                         </div>
 
@@ -212,7 +212,7 @@
                                 Celular *</label>
                             <input type="tel" id="telefone_celular" name="telefone_celular"
                                 value="{{ old('telefone_celular') }}" required x-mask="(99) 99999-9999"
-                                class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors px-4 py-2.5"
+                                class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-colors px-4 py-2.5"
                                 placeholder="(00) 00000-0000">
                         </div>
 
@@ -222,7 +222,7 @@
                                 Principal *</label>
                             <input type="email" id="email" name="email" value="{{ old('email') }}"
                                 required
-                                class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors px-4 py-2.5"
+                                class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-colors px-4 py-2.5"
                                 oninput="document.getElementById('login').value = this.value;">
                         </div>
 
@@ -232,7 +232,7 @@
                                 *</label>
                             <input type="date" id="data_nascimento" name="data_nascimento"
                                 value="{{ old('data_nascimento') }}" required
-                                class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors px-4 py-2.5">
+                                class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-colors px-4 py-2.5">
                         </div>
 
                         <div>
@@ -240,7 +240,7 @@
                                 class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Sexo
                                 *</label>
                             <select id="sexo" name="sexo" required
-                                class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors px-4 py-2.5 cursor-pointer">
+                                class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-colors px-4 py-2.5 cursor-pointer">
                                 <option value="">Selecione</option>
                                 <option value="masculino" {{ old('sexo') == 'masculino' ? 'selected' : '' }}>Masculino
                                 </option>
@@ -254,7 +254,7 @@
                                 class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Estado
                                 Civil *</label>
                             <select id="estado_civil" name="estado_civil" required
-                                class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors px-4 py-2.5 cursor-pointer">
+                                class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-colors px-4 py-2.5 cursor-pointer">
                                 <option value="">Selecione</option>
                                 <option value="solteiro" {{ old('estado_civil') == 'solteiro' ? 'selected' : '' }}>
                                     Solteiro(a)</option>
@@ -272,7 +272,7 @@
                                 class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Etnia
                                 *</label>
                             <select id="cor_raca" name="cor_raca" required
-                                class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors px-4 py-2.5 cursor-pointer">
+                                class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-colors px-4 py-2.5 cursor-pointer">
                                 <option value="">Selecione</option>
                                 <option value="branca" {{ old('cor_raca') == 'branca' ? 'selected' : '' }}>Branca
                                 </option>
@@ -292,7 +292,7 @@
                                 class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Formação
                                 Acadêmica Atual *</label>
                             <select id="ensino_medio" name="ensino_medio" required
-                                class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors px-4 py-2.5 cursor-pointer">
+                                class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-colors px-4 py-2.5 cursor-pointer">
                                 <option value="">Selecione a sua formação...</option>
                                 <option value="superior_completo"
                                     {{ old('ensino_medio') == 'superior_completo' ? 'selected' : '' }}>Superior
@@ -326,7 +326,7 @@
                                     *</label>
                                 <input type="text" id="cep" name="cep" value="{{ old('cep') }}"
                                     required x-mask="99999-999"
-                                    class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors px-4 py-2.5"
+                                    class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-colors px-4 py-2.5"
                                     placeholder="00000-000">
                             </div>
                             <div class="flex-grow">
@@ -335,7 +335,7 @@
                                     *</label>
                                 <input type="text" id="bairro" name="bairro" value="{{ old('bairro') }}"
                                     required
-                                    class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors px-4 py-2.5">
+                                    class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-colors px-4 py-2.5">
                             </div>
                         </div>
 
@@ -345,7 +345,7 @@
                                 (Rua, Número, Comp.) *</label>
                             <input type="text" id="endereco" name="endereco" value="{{ old('endereco') }}"
                                 required
-                                class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors px-4 py-2.5"
+                                class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-colors px-4 py-2.5"
                                 placeholder="Sua rua e número residêncial">
                         </div>
                     </div>
@@ -372,10 +372,10 @@
                                     Desejada *</label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <i class="fa-solid fa-book-open text-indigo-500"></i>
+                                        <i class="fa-solid fa-book-open text-blue-500"></i>
                                     </div>
                                     <select id="curso_select" x-model="selectedCursoId" required
-                                        class="w-full pl-10 rounded-xl border-indigo-200 dark:border-indigo-900 bg-indigo-50/50 dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 font-medium py-3 cursor-pointer">
+                                        class="w-full pl-10 rounded-xl border-blue-200 dark:border-blue-900 bg-blue-50/50 dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 font-medium py-3 cursor-pointer">
                                         <option value="">Selecione seu curso pretendido...</option>
                                         <template x-for="curso in cursosData" :key="curso.id">
                                             <option :value="curso.id" x-text="curso.nome"></option>
@@ -390,11 +390,11 @@
                                     Modalidade *</label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <i class="fa-solid fa-users text-indigo-500"></i>
+                                        <i class="fa-solid fa-users text-blue-500"></i>
                                     </div>
                                     <select id="oferta_select" x-model="selectedOfertaId"
                                         :required="cursoResumo !== null"
-                                        class="w-full pl-10 rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 py-3 cursor-pointer">
+                                        class="w-full pl-10 rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 py-3 cursor-pointer">
                                         <option value="">Selecione o turno e investimento...</option>
                                         <template x-for="oferta in (cursoResumo ? cursoResumo.ofertas : [])"
                                             :key="oferta.id">
@@ -450,15 +450,15 @@
                                 <label
                                     class="cursor-pointer relative flex flex-col items-center justify-center p-5 border-2 rounded-2xl transition-all duration-300 shadow-sm"
                                     :class="formaPagamento === 'boleto' ?
-                                        'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 ring-2 ring-indigo-500/30 ring-offset-2 dark:ring-offset-slate-800' :
+                                        'border-blue-500 bg-blue-50 dark:bg-blue-900/20 ring-2 ring-blue-500/30 ring-offset-2 dark:ring-offset-slate-800' :
                                         'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800/80 bg-white dark:bg-slate-900'">
                                     <input type="radio" name="_forma_pagamento_ui" value="boleto"
                                         x-model="formaPagamento" class="sr-only">
                                     <i class="fa-solid fa-barcode text-4xl mb-3"
-                                        :class="formaPagamento === 'boleto' ? 'text-indigo-600 dark:text-indigo-400' :
+                                        :class="formaPagamento === 'boleto' ? 'text-blue-600 dark:text-blue-400' :
                                             'text-slate-400 dark:text-slate-500'"></i>
                                     <span class="font-bold tracking-wide"
-                                        :class="formaPagamento === 'boleto' ? 'text-indigo-900 dark:text-indigo-100' :
+                                        :class="formaPagamento === 'boleto' ? 'text-blue-900 dark:text-blue-100' :
                                             'text-slate-600 dark:text-slate-400'">Boleto</span>
                                 </label>
 
@@ -481,15 +481,15 @@
 
                                 <!-- Mensagem Explicativa -->
                                 <div
-                                    class="col-span-1 sm:col-span-2 mt-2 p-4 rounded-xl bg-indigo-50 dark:bg-indigo-900/20 shadow-sm border border-indigo-100 dark:border-indigo-800 flex items-start gap-4">
+                                    class="col-span-1 sm:col-span-2 mt-2 p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 shadow-sm border border-blue-100 dark:border-blue-800 flex items-start gap-4">
                                     <div
-                                        class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-800 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0">
+                                        class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-800 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
                                         <i class="fa-solid fa-receipt text-lg"></i>
                                     </div>
                                     <div>
-                                        <h4 class="text-sm font-bold text-indigo-900 dark:text-indigo-100">Faturamento
+                                        <h4 class="text-sm font-bold text-blue-900 dark:text-blue-100">Faturamento
                                             via Carnê Digital</h4>
-                                        <p class="text-xs text-indigo-700 dark:text-indigo-300 mt-1">
+                                        <p class="text-xs text-blue-700 dark:text-blue-300 mt-1">
                                             A sua mensalidade será faturada no formato de carnê mensal (12 parcelas). O
                                             1º vencimento ocorrerá 5 dias após a confirmação da sua matrícula. Você
                                             poderá acompanhar e emitir a segunda via de pagamentos pelo seu Portal do
@@ -509,14 +509,14 @@
 
                     <!-- Card de Acesso ao Sistema -->
                     <div
-                        class="bg-indigo-50/80 dark:bg-indigo-900/10 p-6 md:p-8 rounded-2xl border border-indigo-100 dark:border-indigo-900/50 mt-8 relative overflow-hidden shadow-inner">
+                        class="bg-blue-50/80 dark:bg-blue-900/10 p-6 md:p-8 rounded-2xl border border-blue-100 dark:border-blue-900/50 mt-8 relative overflow-hidden shadow-inner">
                         <div
-                            class="absolute right-0 top-0 -mt-6 -mr-6 text-indigo-500 dark:text-indigo-400 opacity-10 dark:opacity-5 transition-transform transform rotate-12">
+                            class="absolute right-0 top-0 -mt-6 -mr-6 text-blue-500 dark:text-blue-400 opacity-10 dark:opacity-5 transition-transform transform rotate-12">
                             <i class="fa-solid fa-fingerprint text-[150px]"></i>
                         </div>
                         <h3
-                            class="font-bold text-indigo-900 dark:text-indigo-100 mb-5 relative z-10 text-lg flex items-center gap-2">
-                            <i class="fa-solid fa-lock text-indigo-600 dark:text-indigo-400"></i> Crie seu Acesso ao
+                            class="font-bold text-blue-900 dark:text-blue-100 mb-5 relative z-10 text-lg flex items-center gap-2">
+                            <i class="fa-solid fa-lock text-blue-600 dark:text-blue-400"></i> Crie seu Acesso ao
                             Portal
                         </h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 relative z-10">
@@ -526,9 +526,9 @@
                                     Login (E-mail Principal)</label>
                                 <input type="text" id="login" name="login" value="{{ old('login') }}"
                                     readonly required
-                                    class="w-full rounded-xl border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 cursor-not-allowed px-4 py-2.5">
+                                    class="w-full rounded-xl border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 shadow-sm focus:border-blue-500 focus:ring-blue-500 cursor-not-allowed px-4 py-2.5">
                                 <p
-                                    class="text-xs text-indigo-600 dark:text-indigo-400 ml-1 mt-1.5 font-medium flex items-center gap-1">
+                                    class="text-xs text-blue-600 dark:text-blue-400 ml-1 mt-1.5 font-medium flex items-center gap-1">
                                     <i class="fa-solid fa-circle-info"></i> Preenchido automaticamente com seu e-mail.
                                 </p>
                             </div>
@@ -540,10 +540,10 @@
                                 <div class="relative">
                                     <input type="password" id="senha" name="senha" required
                                         autocomplete="new-password" placeholder="Mínimo 8 caracteres"
-                                        class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 px-4 py-2.5 pr-10">
+                                        class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 px-4 py-2.5 pr-10">
                                     <button type="button" tabindex="-1"
                                         onclick="const p=document.getElementById('senha'); const i=this.querySelector('i'); if(p.type==='password'){p.type='text'; i.classList.remove('fa-eye'); i.classList.add('fa-eye-slash');}else{p.type='password'; i.classList.remove('fa-eye-slash'); i.classList.add('fa-eye');}"
-                                        class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-indigo-600 focus:outline-none">
+                                        class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-blue-600 focus:outline-none">
                                         <i class="fa-regular fa-eye"></i>
                                     </button>
                                 </div>
@@ -556,10 +556,10 @@
                                 <div class="relative">
                                     <input type="password" id="senha_confirmation" name="senha_confirmation" required
                                         autocomplete="new-password" placeholder="Repita a senha"
-                                        class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 px-4 py-2.5 pr-10">
+                                        class="w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 px-4 py-2.5 pr-10">
                                     <button type="button" tabindex="-1"
                                         onclick="const p=document.getElementById('senha_confirmation'); const i=this.querySelector('i'); if(p.type==='password'){p.type='text'; i.classList.remove('fa-eye'); i.classList.add('fa-eye-slash');}else{p.type='password'; i.classList.remove('fa-eye-slash'); i.classList.add('fa-eye');}"
-                                        class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-indigo-600 focus:outline-none">
+                                        class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-blue-600 focus:outline-none">
                                         <i class="fa-regular fa-eye"></i>
                                     </button>
                                 </div>
@@ -572,7 +572,7 @@
                 <div
                     class="mt-10 flex justify-between items-center sm:bg-slate-50/50 sm:dark:bg-slate-800/30 sm:border sm:border-slate-100 sm:dark:border-slate-700 sm:rounded-2xl sm:p-4 gap-4 flex-col-reverse sm:flex-row">
                     <button type="button" x-show="step > 1" @click="step--"
-                        class="w-full sm:w-auto px-6 py-3 rounded-xl border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-50 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all">
+                        class="w-full sm:w-auto px-6 py-3 rounded-xl border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-50 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all">
                         <i class="fa-solid fa-arrow-left mr-2"></i> Voltar Etapa
                     </button>
                     <!-- Preenche espaco se botao voltar escondido para alinhar o next na direita na tela web -->
@@ -580,7 +580,7 @@
 
                     <button type="button" x-show="step < maxStep"
                         @click="if(step === 1 && !validateStep1()) { alert('Preencha todos os campos obrigatórios (*)'); return; } if(step === 2 && !validateStep2()) { alert('Preencha os dados de residência (*)'); return; } step++"
-                        class="w-full sm:w-auto px-8 py-3 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all shadow-lg shadow-indigo-600/30 sm:ml-auto flex justify-center items-center gap-2 transform hover:-translate-y-0.5">
+                        class="w-full sm:w-auto px-8 py-3 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all shadow-lg shadow-blue-600/30 sm:ml-auto flex justify-center items-center gap-2 transform hover:-translate-y-0.5">
                         Continuar <i class="fa-solid fa-arrow-right"></i>
                     </button>
 

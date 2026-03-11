@@ -89,8 +89,8 @@
 
                 <h1 class="text-4xl md:text-6xl font-extrabold text-white tracking-tight mb-6 leading-tight">
                     Especialize-se com a <br class="hidden md:block" />
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-blue-500">UNICENTRO
-                        Pós-Graduação</span>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-blue-500">UNICENTROMA
+                       </span>
                 </h1>
 
                 <p class="mt-6 text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10">
@@ -126,14 +126,42 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 @foreach ($cursosDestaque as $curso)
+                    @php
+                        // Helper rudimentar para definir ícone pelo nome do curso
+                        $icone = 'fa-solid fa-graduation-cap'; // Padrão
+                        $nomeLower = strtolower($curso->nome);
+                        $corBg = 'bg-blue-500/10';
+                        $corText = 'text-blue-500';
+                        $corBorder = 'border-blue-500/20';
+
+                        if (str_contains($nomeLower, 'direito') || str_contains($nomeLower, 'previdenciário')) {
+                            $icone = 'fa-solid fa-scale-balanced';
+                        } elseif (str_contains($nomeLower, 'saúde') || str_contains($nomeLower, 'urgência') || str_contains($nomeLower, 'hospitalar')) {
+                            $icone = 'fa-solid fa-heart-pulse';
+                            $corBg = 'bg-emerald-500/10';
+                            $corText = 'text-emerald-500';
+                            $corBorder = 'border-emerald-500/20';
+                        } elseif (str_contains($nomeLower, 'educação') || str_contains($nomeLower, 'pedagogia')) {
+                            $icone = 'fa-solid fa-book-open-reader';
+                            $corBg = 'bg-purple-500/10';
+                            $corText = 'text-purple-500';
+                            $corBorder = 'border-purple-500/20';
+                        } elseif (str_contains($nomeLower, 'tecnologia') || str_contains($nomeLower, 'dados')) {
+                            $icone = 'fa-solid fa-microchip';
+                            $corBg = 'bg-cyan-500/10';
+                            $corText = 'text-cyan-500';
+                            $corBorder = 'border-cyan-500/20';
+                        }
+                    @endphp
                     {{-- Card Curso --}}
                     <div
                         class="bg-gray-800 border border-gray-700 rounded-2xl overflow-hidden hover:border-gray-500 hover:-translate-y-1 transition-all duration-300 shadow-lg group flex flex-col h-full">
                         <div class="p-8 flex-grow">
-                            <div
-                                class="w-14 h-14 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-500 mb-6 group-hover:scale-110 group-hover:bg-emerald-500/20 transition-all">
-                                <span
-                                    class="px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-500 text-[10px] font-bold uppercase tracking-widest border border-emerald-500/20">Pós-Graduação</span>
+                            <div class="flex items-center justify-between mb-6">
+                                <div class="w-14 h-14 {{ $corBg }} rounded-xl flex items-center justify-center {{ $corText }} group-hover:scale-110 group-hover:{{ str_replace('/10', '/30', $corBg) }} transition-all">
+                                    <i class="{{ $icone }} text-2xl"></i>
+                                </div>
+                                <span class="px-2.5 py-1 rounded-md {{ $corBg }} {{ $corText }} text-[10px] font-bold uppercase tracking-widest border {{ $corBorder }}">Pós-Graduação</span>
                             </div>
                             <h3 class="text-xl font-bold text-white mb-3 leading-snug">{{ $curso->nome }}</h3>
                             <p class="text-gray-300 text-sm mb-6">Pós-Graduação Latu Sensu. Matriz curricular atualizada

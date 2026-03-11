@@ -64,50 +64,30 @@
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse min-w-[1000px]">
                         <thead>
-                            <tr class="bg-slate-50 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-700">
+                            <tr class="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-white/5">
                                 <th
-                                    class="py-4 px-4 font-semibold text-sm text-slate-800 dark:text-slate-200 sticky left-0 bg-slate-50 dark:bg-slate-800/90 z-10 w-64 border-r border-slate-200 dark:border-slate-700">
-                                    Aluno</th>
+                                    class="py-5 px-6 font-black text-[10px] uppercase tracking-[0.2em] text-slate-500 sticky left-0 bg-slate-50 dark:bg-slate-900 z-10 w-72 border-r border-slate-200 dark:border-white/5">
+                                    Aluno(a)</th>
 
                                 <!-- 1º Bimestre -->
-                                <th
-                                    class="py-4 px-2 font-semibold text-xs text-center text-slate-600 dark:text-slate-300 bg-indigo-50/50 dark:bg-indigo-900/10 w-24">
-                                    T1 (1.0)</th>
-                                <th
-                                    class="py-4 px-2 font-semibold text-xs text-center text-slate-600 dark:text-slate-300 bg-indigo-50/50 dark:bg-indigo-900/10 w-24">
-                                    T2 (1.0)</th>
-                                <th
-                                    class="py-4 px-2 font-semibold text-xs text-center text-slate-600 dark:text-slate-300 bg-indigo-50/50 dark:bg-indigo-900/10 w-24">
-                                    T3 (2.0)</th>
-                                <th
-                                    class="py-4 px-2 font-semibold text-xs text-center text-slate-600 dark:text-slate-300 bg-indigo-50/50 dark:bg-indigo-900/10 w-24">
-                                    Aval. (6.0)</th>
-                                <th
-                                    class="py-4 px-3 font-bold text-sm text-center text-indigo-700 dark:text-indigo-400 bg-indigo-100/50 dark:bg-indigo-900/30 w-24">
-                                    Total B1</th>
+                                <th class="py-5 px-2 font-black text-[10px] uppercase tracking-[0.15em] text-center text-indigo-500 bg-indigo-500/5 w-24">T1 (1.0)</th>
+                                <th class="py-5 px-2 font-black text-[10px] uppercase tracking-[0.15em] text-center text-indigo-500 bg-indigo-500/5 w-24">T2 (1.0)</th>
+                                <th class="py-5 px-2 font-black text-[10px] uppercase tracking-[0.15em] text-center text-indigo-500 bg-indigo-500/5 w-24">T3 (2.0)</th>
+                                <th class="py-5 px-2 font-black text-[10px] uppercase tracking-[0.15em] text-center text-indigo-500 bg-indigo-500/5 w-24">AVAL (6.0)</th>
+                                <th class="py-5 px-3 font-black text-[10px] uppercase tracking-[0.2em] text-center text-white bg-indigo-600 w-24 shadow-inner">B1 TOTAL</th>
 
                                 <!-- 2º Bimestre -->
-                                <th
-                                    class="py-4 px-2 font-semibold text-xs text-center text-slate-600 dark:text-slate-300 bg-blue-50/50 dark:bg-blue-900/10 w-24">
-                                    T1 (1.0)</th>
-                                <th
-                                    class="py-4 px-2 font-semibold text-xs text-center text-slate-600 dark:text-slate-300 bg-blue-50/50 dark:bg-blue-900/10 w-24">
-                                    T2 (1.0)</th>
-                                <th
-                                    class="py-4 px-2 font-semibold text-xs text-center text-slate-600 dark:text-slate-300 bg-blue-50/50 dark:bg-blue-900/10 w-24">
-                                    T3 (2.0)</th>
-                                <th
-                                    class="py-4 px-2 font-semibold text-xs text-center text-slate-600 dark:text-slate-300 bg-blue-50/50 dark:bg-blue-900/10 w-24">
-                                    Aval. (6.0)</th>
-                                <th
-                                    class="py-4 px-3 font-bold text-sm text-center text-blue-700 dark:text-blue-400 bg-blue-100/50 dark:bg-blue-900/30 w-24 border-r border-slate-200 dark:border-slate-700">
-                                    Total B2</th>
+                                <th class="py-5 px-2 font-black text-[10px] uppercase tracking-[0.15em] text-center text-blue-500 bg-blue-500/5 w-24">T1 (1.0)</th>
+                                <th class="py-5 px-2 font-black text-[10px] uppercase tracking-[0.15em] text-center text-blue-500 bg-blue-500/5 w-24">T2 (1.0)</th>
+                                <th class="py-5 px-2 font-black text-[10px] uppercase tracking-[0.15em] text-center text-blue-500 bg-blue-500/5 w-24">T3 (2.0)</th>
+                                <th class="py-5 px-2 font-black text-[10px] uppercase tracking-[0.15em] text-center text-blue-500 bg-blue-500/5 w-24">AVAL (6.0)</th>
+                                <th class="py-5 px-3 font-black text-[10px] uppercase tracking-[0.2em] text-center text-white bg-blue-600 w-24 shadow-inner border-r border-slate-200 dark:border-white/5">B2 TOTAL</th>
 
                                 <!-- Resultado -->
-                                <th class="py-4 px-4 font-bold text-sm text-center text-slate-800 dark:text-slate-200 w-24">
-                                    Média (10)</th>
-                                <th class="py-4 px-4 font-bold text-sm text-center text-slate-800 dark:text-slate-200 w-32">
-                                    Status</th>
+                                <th class="py-5 px-2 font-black text-[10px] uppercase tracking-[0.2em] text-center text-slate-800 dark:text-white w-20">FALTAS</th>
+                                <th class="py-5 px-2 font-black text-[10px] uppercase tracking-[0.2em] text-center text-slate-800 dark:text-white w-20">FREQ %</th>
+                                <th class="py-5 px-4 font-black text-[10px] uppercase tracking-[0.2em] text-center text-slate-800 dark:text-white w-24">MÉDIA</th>
+                                <th class="py-5 px-4 font-black text-[10px] uppercase tracking-[0.2em] text-center text-slate-800 dark:text-white w-32 uppercase">Resultado</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
@@ -190,7 +170,22 @@
                                             class="text-sm font-bold text-blue-700 dark:text-blue-400">{{ $matricula->notas->b2_total ?? '-' }}</span>
                                     </td>
 
-                                    {{-- Média e Status --}}
+                                    {{-- Média, Freq e Status --}}
+                                    <td class="py-2 px-2 bg-slate-50/50 dark:bg-slate-900/50">
+                                        <input type="number" step="1" min="0" max="{{ $disciplina->carga_horaria }}"
+                                            name="notas[{{ $matricula->id }}][faltas]"
+                                            value="{{ $matricula->faltas ?? 0 }}"
+                                            {{ $disciplina->status === 'fechado' ? 'readonly' : '' }}
+                                            class="w-full text-center text-sm font-bold text-slate-700 dark:text-slate-300 rounded-lg border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-slate-500 focus:border-slate-500 px-1 py-1.5 hide-arrows {{ $disciplina->status === 'fechado' ? 'opacity-70 cursor-not-allowed bg-slate-50 dark:bg-slate-800' : '' }}">
+                                    </td>
+                                    <td class="py-2 px-2 text-center bg-slate-50/50 dark:bg-slate-900/50 border-r border-slate-100 dark:border-slate-800">
+                                        @php
+                                            $freq = $disciplina->carga_horaria > 0 
+                                                ? round((($disciplina->carga_horaria - ($matricula->faltas ?? 0)) / $disciplina->carga_horaria) * 100) 
+                                                : 0;
+                                        @endphp
+                                        <span class="text-sm font-black {{ $freq < 75 ? 'text-red-500' : 'text-emerald-500' }}">{{ $freq }}%</span>
+                                    </td>
                                     <td class="py-2 px-4 text-center">
                                         <span
                                             class="text-sm font-black {{ ($matricula->notas->media_final ?? 0) >= 7.0 ? 'text-emerald-500' : (isset($matricula->notas->media_final) ? 'text-red-500' : 'text-slate-500') }}">

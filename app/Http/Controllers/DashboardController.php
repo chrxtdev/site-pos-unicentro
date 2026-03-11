@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Curso;
-use App\Models\Signin;
-
 class DashboardController extends Controller
 {
     public function index()

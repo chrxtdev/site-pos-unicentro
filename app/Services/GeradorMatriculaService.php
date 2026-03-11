@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Signin;
 use App\Models\Curso;
-use Illuminate\Support\Str;
 
 class GeradorMatriculaService
 {

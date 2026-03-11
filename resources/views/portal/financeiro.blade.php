@@ -181,8 +181,13 @@
                         </table>
 
                         {{-- Links de Paginação --}}
-                        <div class="px-8 py-4 bg-slate-900/30 border-t border-slate-700/50">
-                            {{ $faturas->links() }}
+                        <div class="px-8 py-6 bg-slate-50/50 dark:bg-slate-900/50 border-t border-slate-200 dark:border-white/5">
+                            <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                                <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Mostrando faturas {{ $faturas->firstItem() }} a {{ $faturas->lastItem() }} de {{ $faturas->total() }}</span>
+                                <div class="pagination-custom">
+                                    {{ $faturas->links() }}
+                                </div>
+                            </div>
                         </div>
                     @else
                         <div class="px-6 py-16 text-center text-gray-500">

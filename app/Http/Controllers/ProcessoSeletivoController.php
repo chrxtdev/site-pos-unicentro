@@ -7,64 +7,52 @@ use Illuminate\Http\Request;
 
 class ProcessoSeletivoController extends Controller
 {
-    // Lista os processos seletivos com paginação
     public function index()
     {
-        $processos = ProcessoSeletivo::latest('id')->paginate(10); 
+        $processos = ProcessoSeletivo::latest('id')->paginate(10);
         return view('processos.index', compact('processos'));
     }
 
-    // Exibe o formulário para criar um novo processo seletivo
     public function create()
     {
-        return view('processos.create'); // View de criação
+        return view('processos.create');
     }
 
-    // Armazena um novo processo seletivo no banco de dados
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nome' => 'required|string|max:255',
             'numero_etapas' => 'required|integer|min:1',
             'numero_ofertas' => 'required|integer|min:1',
             'situacao' => 'required|in:ATIVO,INATIVO',
         ]);
 
-        ProcessoSeletivo::create($request->only('nome', 'numero_etapas', 'numero_ofertas', 'situacao'));
+        ProcessoSeletivo::create($validated);
 
         return redirect()->route('processos.index')->with('success', 'Processo Seletivo criado com sucesso!');
     }
 
-    // Exibe o formulário para editar um processo seletivo existente
     public function edit(ProcessoSeletivo $processo)
     {
-        return view('processos.create', compact('processo')); // View de edição
+        return view('processos.create', compact('processo'));
     }
 
-    // Atualiza um processo seletivo existente
     public function update(Request $request, ProcessoSeletivo $processo)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nome' => 'required|string|max:255',
             'numero_etapas' => 'required|integer|min:1',
             'numero_ofertas' => 'required|integer|min:1',
             'situacao' => 'required|in:ATIVO,INATIVO',
         ]);
 
-        $processo->update($request->only('nome', 'numero_etapas', 'numero_ofertas', 'situacao'));
+        $processo->update($validated);
 
         return redirect()->route('processos.index')->with('success', 'Processo Seletivo atualizado com sucesso!');
     }
 
-    // Exclui um processo seletivo existente
-    public function destroy($id)
+    public function destroy(ProcessoSeletivo $processo)
     {
-        $processo = ProcessoSeletivo::find($id);
-
-        if (!$processo) {
-            return redirect()->route('processos.index')->with('error', 'Processo Seletivo não encontrado.');
-        }
-
         $processo->delete();
 
         return redirect()->route('processos.index')->with('success', 'Processo Seletivo excluído com sucesso!');

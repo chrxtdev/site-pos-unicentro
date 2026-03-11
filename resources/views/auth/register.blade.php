@@ -12,7 +12,7 @@
             <label for="name" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Nome
                 Completo</label>
             <input id="name"
-                class="block mt-1 w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors uppercase"
+                class="block mt-1 w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-colors uppercase"
                 type="text" name="name" :value="old('name')" required autofocus autocomplete="name"
                 placeholder="João da Silva" oninput="this.value = this.value.toUpperCase();" />
             <x-input-error :messages="$errors->get('name')" class="mt-2 text-red-500" />
@@ -22,7 +22,7 @@
         <div>
             <label for="email" class="block text-sm font-medium text-slate-700 dark:text-slate-300">E-mail</label>
             <input id="email"
-                class="block mt-1 w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors"
+                class="block mt-1 w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-colors"
                 type="email" name="email" :value="old('email')" required autocomplete="username"
                 placeholder="seu@email.com" />
             <x-input-error :messages="$errors->get('email')" class="mt-2 text-red-500" />
@@ -33,11 +33,11 @@
             <label for="password" class="block text-sm font-medium text-slate-700 dark:text-slate-300">Senha</label>
             <div class="relative">
                 <input id="password"
-                    class="block mt-1 w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors pr-10"
+                    class="block mt-1 w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-colors pr-10"
                     type="password" name="password" required autocomplete="new-password" placeholder="••••••••" />
                 <button type="button" tabindex="-1"
                     onclick="const p=document.getElementById('password'); const i=this.querySelector('i'); if(p.type==='password'){p.type='text'; i.classList.remove('fa-eye'); i.classList.add('fa-eye-slash');}else{p.type='password'; i.classList.remove('fa-eye-slash'); i.classList.add('fa-eye');}"
-                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-indigo-600 focus:outline-none">
+                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-blue-600 focus:outline-none">
                     <i class="fa-regular fa-eye"></i>
                 </button>
             </div>
@@ -50,12 +50,12 @@
                 class="block text-sm font-medium text-slate-700 dark:text-slate-300">Confirmar Senha</label>
             <div class="relative">
                 <input id="password_confirmation"
-                    class="block mt-1 w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors pr-10"
+                    class="block mt-1 w-full rounded-xl border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-colors pr-10"
                     type="password" name="password_confirmation" required autocomplete="new-password"
                     placeholder="••••••••" />
                 <button type="button" tabindex="-1"
                     onclick="const p=document.getElementById('password_confirmation'); const i=this.querySelector('i'); if(p.type==='password'){p.type='text'; i.classList.remove('fa-eye'); i.classList.add('fa-eye-slash');}else{p.type='password'; i.classList.remove('fa-eye-slash'); i.classList.add('fa-eye');}"
-                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-indigo-600 focus:outline-none">
+                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-blue-600 focus:outline-none">
                     <i class="fa-regular fa-eye"></i>
                 </button>
             </div>
@@ -64,7 +64,7 @@
 
         <div class="pt-4">
             <button type="submit"
-                class="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-xl shadow-md text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all transform hover:-translate-y-0.5">
+                class="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-xl shadow-md text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all transform hover:-translate-y-0.5">
                 Registrar Conta <i class="fa-solid fa-user-plus ml-2"></i>
             </button>
         </div>
@@ -73,7 +73,7 @@
             <p class="text-sm text-slate-600 dark:text-slate-400">
                 Já tem uma conta?
                 <a href="{{ route('login') }}"
-                    class="font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 transition-colors">Faça
+                    class="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500 transition-colors">Faça
                     login</a>
             </p>
         </div>

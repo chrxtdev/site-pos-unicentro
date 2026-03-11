@@ -190,6 +190,7 @@
                     </a>
                 @endcan
 
+                @if(auth()->user()->is_admin || auth()->user()->hasAnyRole(['admin_master', 'financeiro', 'admin_comum']))
                 <a class="flex items-center gap-4 px-4 py-3 rounded-2xl mt-4 border border-amber-500/30 bg-amber-500/5 text-amber-500 hover:bg-amber-500 hover:text-white transition-all duration-300 group"
                     href="{{ route('aluno.portal') }}">
                     <div
@@ -198,6 +199,7 @@
                     </div>
                     <span class="text-sm font-black tracking-tight">Abrir Portal Aluno</span>
                 </a>
+                @endif
             </nav>
 
             <div class="p-4 border-t border-slate-800">
@@ -267,26 +269,34 @@
                             </div>
                             <div class="max-h-[300px] overflow-y-auto custom-scrollbar">
                                 @php
-                                    $ultimasMatriculas = \App\Models\Signin::latest()->take(3)->get();
+                                    $ultimasMatriculas = \App\Models\Signin::latest()->take(10)->get();
                                 @endphp
-                                @foreach ($ultimasMatriculas as $notif)
+                                @forelse ($ultimasMatriculas as $notif)
                                     <a href="{{ route('financeiro.show', $notif->id) }}"
-                                        class="flex items-start gap-3 p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 border-b border-slate-50 dark:border-slate-800/50 transition-colors">
+                                        class="flex items-start gap-4 p-4 hover:bg-slate-50 dark:hover:bg-slate-800/60 border-b border-slate-100 dark:border-white/5 transition-all group/notif">
                                         <div
-                                            class="w-8 h-8 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                            <i class="fa-solid fa-user-plus text-xs"></i>
+                                            class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center flex-shrink-0 group-hover/notif:scale-110 transition-transform">
+                                            <i class="fa-solid fa-user-plus text-sm"></i>
                                         </div>
-                                        <div>
-                                            <p class="text-xs font-semibold text-slate-900 dark:text-white mb-0.5">
-                                                Inscrição processada</p>
-                                            <p class="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2">
-                                                <b>{{ $notif->nome }}</b> via {{ ucfirst($notif->forma_pagamento) }}.
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-xs font-bold text-slate-900 dark:text-white mb-0.5 truncate">
+                                                Matrícula Realizada</p>
+                                            <p class="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                                                <span class="font-bold text-slate-700 dark:text-slate-300">{{ $notif->nome }}</span> acaba de se inscrever.
                                             </p>
-                                            <span class="text-[9px] text-slate-400 block mt-1"><i
-                                                    class="fa-regular fa-clock mr-1"></i>{{ $notif->created_at->diffForHumans() }}</span>
+                                            <span class="text-[9px] text-slate-400 font-medium flex items-center mt-1.5 uppercase tracking-wider">
+                                                <i class="fa-regular fa-clock mr-1 text-[10px]"></i>{{ $notif->created_at->diffForHumans() }}
+                                            </span>
                                         </div>
                                     </a>
-                                @endforeach
+                                @empty
+                                    <div class="p-8 text-center">
+                                        <div class="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-3">
+                                            <i class="fa-solid fa-bell-slash text-slate-400"></i>
+                                        </div>
+                                        <p class="text-xs text-slate-500">Nenhuma notificação recente.</p>
+                                    </div>
+                                @endforelse
                             </div>
                             @hasanyrole('admin_master|financeiro')
                                 <div

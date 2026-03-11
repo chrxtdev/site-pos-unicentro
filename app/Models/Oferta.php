@@ -16,8 +16,12 @@ class Oferta extends Model
         'data_vencimento_taxa',
         'conta_recebimento',
     ];
-    
-    // Relacionamento com processo seletivo
+
+    protected $casts = [
+        'valor_taxa' => 'decimal:2',
+        'data_vencimento_taxa' => 'date',
+    ];
+
     public function processoSeletivo()
     {
         return $this->belongsTo(ProcessoSeletivo::class);
